@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lesion Lens Report</title>
+    <link rel="stylesheet" href="report_style.css">
+</head>
+<body>
+
+{% macro add_lesion_summary_row(lesion_id, lesion_data) -%}
+<tr>
+    <td> {{ lesion_id }}</td>
+    <td> {{ lesion_data.point[0] }} | {{ lesion_data.point[1] }} | {{ lesion_data.point[2] }}
+        ({{lesion_data.closest_nipple}})
+    </td>
+    <td> {{ lesion_data.distance_to_nipple }}</td>
+    <td> {{ lesion_data.geometry.volume }}mm<sup>3</sup></td>
+    <td> {{ lesion_data.prediction }}</td>
+</tr>
+{% endmacro %}
+
+<div class="horizontal_block">
+    <img src="all_subream_logos.png" alt="SUBREAM logos banner" class="image_autofit"/>
+    <h1>Lesion Lens Report V0</h1>
+    <h2>Patient information</h2>
+    <table>
+        <tr>
+            <th>Patient Name</th>
+            <td>{{ patient_data.name }}</td>
+        </tr>
+        <tr>
+            <th>Patient Date of Birth</th>
+            <td>{{ patient_data.birthdate }} ({{ patient_data.age }}y)</td>
+        </tr>
+        <tr>
+            <th>Examination Date</th>
+            <td>{{ patient_data.acquisition_date }}</td>
+        </tr>
+    </table>
+    <br/>
+    <table>
+        <thead>
+        <tr>
+            <th>BRCA</th>
+            <th>Chemotherapy</th>
+            <th>Risk (family)</th>
+            <th>Risk (patient)</th>
+            <th>Menopausal status</th>
+            <th>Contraception</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ patient_data.brca }}</td>
+            <td>{{ patient_data.chemo }}</td>
+            <td>{{ patient_data.famrisk }}</td>
+            <td>{{ patient_data.patrisk }}</td>
+            <td>{{ patient_data.menostatus }}</td>
+            <td>{{ patient_data.contraception }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <h2>Lesion classification summary</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Location</th>
+            <th>Distance to nipple</th>
+            <th>Volume</th>
+            <th>Prediction</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for lesion_id, lesion_data in lesions.items() -%}
+        {{ add_lesion_summary_row(lesion_id, lesion_data) }}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% macro add_lesion_page(lesion_id, lesion_data) -%}
+<div class="lesion_block">
+    <h2>Lesion {{ lesion_id }}</h2>
+    <p class="lesion_coordinates">
+        Location (mm): {{ lesion_data.point[0] }} | {{ lesion_data.point[1] }} | {{ lesion_data.point[2] }}
+    </p>
+    <div class="horizontal_block"> <!-- Horizontal Div (Top) -->
+        <div class="float_left"> <!-- Left Div -->
+            <div>
+                <h2 class="subsection">Lesion data</h2>
+                <p> Prediction: {{ lesion_data.prediction }}</p>
+                <p> Distance to {{lesion_data.closest_nipple}} nipple: {{ lesion_data.distance_to_nipple }}</p>
+                <p> Volume: {{ lesion_data.geometry.volume }}mm<sup>3</sup></p>
+            </div>
+        </div>
+        <div class="float_right"> <!-- Right Div -->
+            <div>
+                <h2 class="subsection">Lesion location</h2>
+                <img src="{{ lesion_data.lesion_point_image_path }}" alt="Lesion point image" class="image_autofit">
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="horizontal_block"> <!-- Horizontal Div (Bottom) -->
+        <div class="float_left"> <!-- Left Div -->
+            <div>
+                <h2 class="subsection">Lesion (Axial)</h2>
+                <img src="{{ lesion_data.lesion_projection_paths[0] }}" alt="Lesion crop image" class="image_autofit">
+            </div>
+        </div>
+        <div class="float_right"> <!-- Right Div -->
+            <div>
+                <h2 class="subsection">Occlusion map</h2>
+                <img src="{{ lesion_data.occlusion_map_path }}" alt="Occlusion map" class="image_autofit">
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="horizontal_block"> <!-- Horizontal Div (Bottom) -->
+        <div class="float_left"> <!-- Left Div -->
+            <div>
+                <h2 class="subsection">Lesion (Coronal)</h2>
+                <img src="{{ lesion_data.lesion_projection_paths[1] }}" alt="Lesion crop image" class="image_autofit">
+            </div>
+        </div>
+        <div class="float_right"> <!-- Right Div -->
+            <div>
+                <h2 class="subsection">Lesion (Sagittal)</h2>
+                <img src="{{ lesion_data.lesion_projection_paths[2] }}" alt="Occlusion map" class="image_autofit">
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% for lesion_id, lesion_data in lesions.items() -%}
+{{ add_lesion_page(lesion_id, lesion_data) }}
+{% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+@page {
+    size: 210mm 297mm;
+    margin: 0px 0px 0px 0px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 18pt;
+    color: #14967F;
+}
+
+h2 {
+    text-align: left;
+    font-size: 16pt;
+    margin-bottom: 4px;
+    color: #095D7E;
+}
+
+.subsection {
+    margin: 0;
+    font-size: 14pt;
+    background-color: #14967F;
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+table {
+    border: 1px solid;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid;
+    border-color: #095D7E;
+    border-collapse: collapse;
+    padding-left: 4px;
+}
+
+th {
+    background-color: #095D7E;
+    color: white;
+    text-align: center;
+}
+
+.horizontal_block {
+    width: 100%;
+    display: inline-block;
+}
+
+.lesion_block {
+    width: 100%;
+    display: inline-block;
+}
+
+.float_left {
+    float:left;
+    width: 45%;
+    border-radius: 16px;
+    padding: 8px;
+}
+
+.float_right {
+float: right;
+    width: 45%;
+    border-radius: 16px;
+    padding: 8px;
+}
+
+.image_autofit {
+    width: 100%;
+    object-fit: contain;
+}
+
+.lesion_coordinates {
+    margin: 0 auto;
+
+    text-align: center;
+    font-size: 12pt;
+}

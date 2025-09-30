@@ -1,8 +1,7 @@
-# noinspection PyUnresolvedReferences
-from models.classification.sieve import MultimodalSieve
 from mindful_core.main import main
 
-import torch
+# noinspection PyUnresolvedReferences
+from mindful_subream.models.classification.sieve import MultimodalSieve
 
 if __name__ == "__main__":
     main()

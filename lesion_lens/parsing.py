@@ -21,14 +21,14 @@ def parse_suspected_lesions_positions(suspected_lesions_positions_path: str | Pa
 def parse_scalar_data(patient_information_path: str | Path,
                       lesion_information_path: str | Path,
                       suspected_lesions_positions: dict[str, np.ndarray]
-                      ) -> dict[str, np.ndarray] | None:
+                      ) -> dict[str, list[float | None]] | None:
     patient_information_path = Path(patient_information_path)
     lesion_information_path = Path(lesion_information_path)
     if (not patient_information_path.exists()) or (not lesion_information_path.exists()):
         return None
 
     patient_information = load_json(patient_information_path)
-    age = patient_information["age"]
+    age: float | None = patient_information.get("age")
 
     lesion_information = load_json(lesion_information_path)
     compute_lesion_geometry = lesion_information["compute_lesion_geometry"]
@@ -36,7 +36,7 @@ def parse_scalar_data(patient_information_path: str | Path,
         raise NotImplementedError("`compute_lesion_geometry=True` is not supported yet.")
 
     lesions_data: list[dict[str, str | dict[str, float]]] = lesion_information["lesions"]
-    lesions_scalar_data: dict[str, np.ndarray] = {}
+    lesions_scalar_data: dict[str, list[float | None]] = {}
     for lesion_data in lesions_data:
         name: str = lesion_data["name"]
         geometry: dict[str, float] = lesion_data["geometry"]
@@ -44,30 +44,30 @@ def parse_scalar_data(patient_information_path: str | Path,
         lesion_scalars = [
             age,
 
-            geometry["bounding_box_center_x"],
-            geometry["bounding_box_center_y"],
-            geometry["bounding_box_center_z"],
+            geometry.get("bounding_box_center_x"),
+            geometry.get("bounding_box_center_y"),
+            geometry.get("bounding_box_center_z"),
 
-            geometry["bounding_box_size_x"],
-            geometry["bounding_box_size_y"],
-            geometry["bounding_box_size_z"],
+            geometry.get("bounding_box_size_x"),
+            geometry.get("bounding_box_size_y"),
+            geometry.get("bounding_box_size_z"),
 
-            geometry["volume"],
+            geometry.get("volume"),
 
             position[0],
             position[1],
             position[2],
 
-            geometry["elongation"],
+            geometry.get("elongation"),
 
-            geometry["equivalent_ellipsoid_diameter_1"],
-            geometry["equivalent_ellipsoid_diameter_2"],
-            geometry["equivalent_ellipsoid_diameter_3"],
+            geometry.get("equivalent_ellipsoid_diameter_1"),
+            geometry.get("equivalent_ellipsoid_diameter_2"),
+            geometry.get("equivalent_ellipsoid_diameter_3"),
 
-            geometry["flatness"],
+            geometry.get("flatness"),
         ]
 
-        lesions_scalar_data[name] = np.asarray(lesion_scalars, np.float32)
+        lesions_scalar_data[name] = lesion_scalars
 
     return lesions_scalar_data
 

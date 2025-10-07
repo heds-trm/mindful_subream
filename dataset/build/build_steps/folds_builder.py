@@ -6,6 +6,8 @@ from pathlib import Path
 import os
 import warnings
 
+from mindful_core.utils.data_constants import SCAN_ID, SUBSET_ID, LABEL, DEFAULT_IMAGE_COLUMN, DEFAULT_MASK_COLUMN
+
 from mindful_subream.dataset.build.build_steps.build_step import SubreamBuildStep
 from mindful_subream.dataset.build.build_data import SubreamBuildData
 from mindful_subream.dataset.build.build_logger import SubreamBuildLogger
@@ -325,8 +327,8 @@ def make_cross_validation_folds(partitions: list[list[SubreamSample]],
 
                 line = [sample.scan_id, subset_name, sample.label, sample.image_path, sample.mask_path]
                 table.append(line)
-
-        data_frame = pd.DataFrame(table, columns=["ScanID", "SubsetID", "Label", "image:image", "image:mask"])
+        
+        data_frame = pd.DataFrame(table, columns=[SCAN_ID, SUBSET_ID, LABEL, DEFAULT_IMAGE_COLUMN, DEFAULT_MASK_COLUMN])
         data_frames.append(data_frame)
     return data_frames
 
@@ -412,10 +414,10 @@ class SubreamFoldsBuilder(SubreamBuildStep):
 
         folds = []
         for reference_path in reference_paths:
-            fold = pd.read_csv(reference_path, index_col="ScanID")
+            fold = pd.read_csv(reference_path, index_col=SCAN_ID)
 
             # region Init update
-            update = {"image:image": {}, "image:mask": {}}
+            update = {DEFAULT_IMAGE_COLUMN: {}, DEFAULT_MASK_COLUMN: {}}
 
             # endregion
 
@@ -433,8 +435,8 @@ class SubreamFoldsBuilder(SubreamBuildStep):
                 last_phase_path = rois_filepaths[-1].as_posix()
                 mask_path = extracted_masks_paths[0].as_posix()
 
-                update["image:image"][point_id] = last_phase_path
-                update["image:mask"][point_id] = mask_path
+                update[DEFAULT_IMAGE_COLUMN][point_id] = last_phase_path
+                update[DEFAULT_MASK_COLUMN][point_id] = mask_path
 
             # endregion
 
@@ -519,7 +521,7 @@ class SubreamFoldsBuilder(SubreamBuildStep):
 
                 target_folds = []
                 for i, original_fold_path in enumerate(original_folds[fold_version][mode]):
-                    original_fold = pd.read_csv(original_fold_path, index_col="ScanID")
+                    original_fold = pd.read_csv(original_fold_path, index_col=SCAN_ID)
                     target_fold = self.convert_fold(original_fold, target, fold_version, mode, fold_number=i)
                     target_fold_path = target_folder_path / original_fold_path.name
                     target_fold.to_csv(target_fold_path)
@@ -576,7 +578,7 @@ class SubreamFoldsBuilder(SubreamBuildStep):
 
         existing_patients: list[str] = []
         for original_fold_path in original_folds:
-            original_fold = pd.read_csv(original_fold_path, index_col="ScanID")
+            original_fold = pd.read_csv(original_fold_path, index_col=SCAN_ID)
             for row_id in original_fold.index:
                 patient_id, *_ = row_id.split("_")
 
@@ -615,7 +617,7 @@ class SubreamFoldsBuilder(SubreamBuildStep):
         for row_id, row in original_fold.iterrows():
             row_id: str
             patient_id, *_ = row_id.split("_")
-            subset_id = row["SubsetID"]
+            subset_id = row[SUBSET_ID]
             if patient_id not in patients_subsets:
                 patients_subsets[patient_id] = subset_id
 
@@ -655,9 +657,9 @@ class SubreamFoldsBuilder(SubreamBuildStep):
             # endregion
 
             row = {
-                "SubsetID": subset_id,
-                "image:image": images_paths[-1],
-                "image:mask": masks_paths[0],
+                SUBSET_ID: subset_id,
+                DEFAULT_IMAGE_COLUMN: images_paths[-1],
+                DEFAULT_MASK_COLUMN: masks_paths[0],
             }
             target_data[bounding_boxes_id] = row
 

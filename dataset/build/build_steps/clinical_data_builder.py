@@ -2,6 +2,7 @@ import pandas as pd
 from pathlib import Path
 
 from mindful_core.utils.parsing import parse_last_number
+from mindful_core.utils.data_constants import SCAN_ID
 
 from mindful_subream.dataset.build.build_steps.build_step import SubreamBuildStep
 from mindful_subream.dataset.build.build_data import SubreamBuildData
@@ -117,8 +118,8 @@ class SubreamClinicalDataBuilder(SubreamBuildStep):
         return categorical_data, scalar_data
 
     def save_data(self, categorical_data: pd.DataFrame, scalar_data: pd.DataFrame) -> None:
-        categorical_data.index.name = "ScanID"
-        scalar_data.index.name = "ScanID"
+        categorical_data.index.name = SCAN_ID
+        scalar_data.index.name = SCAN_ID
 
         clinical_data_folder = self.get_output_path("clinical_data")
         categorical_filepath = clinical_data_folder / "categorical_features.csv"

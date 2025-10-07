@@ -2,6 +2,8 @@ import pandas as pd
 from pathlib import Path
 import argparse
 
+from mindful_core.utils.data_constants import SCAN_ID
+
 
 def get_lesion_attributes(lesion_attributes_path: str) -> pd.DataFrame:
     lesion_attributes = pd.read_csv(lesion_attributes_path)
@@ -35,7 +37,7 @@ def main():
     base_categorical_data = clinical_data[[column for column in clinical_data.columns if column not in known_scalars]]
     base_scalar_data = clinical_data[[column for column in clinical_data.columns if column in known_scalars]]
 
-    reference_fold = pd.read_csv(args.reference_fold, index_col="ScanID")
+    reference_fold = pd.read_csv(args.reference_fold, index_col=SCAN_ID)
 
     if args.lesion_attributes is not None:
         lesion_attributes = get_lesion_attributes(args.lesion_attributes)
@@ -65,8 +67,8 @@ def main():
         lesion_attributes_data = pd.DataFrame.from_dict(lesion_attributes_rows, orient="index")
         scalar_data = pd.concat([scalar_data, lesion_attributes_data], axis=1)
 
-    categorical_data.index.name = "ScanID"
-    scalar_data.index.name = "ScanID"
+    categorical_data.index.name = SCAN_ID
+    scalar_data.index.name = SCAN_ID
 
     categorical_data.to_csv(categorical_filepath)
     scalar_data.to_csv(scalar_filepath)

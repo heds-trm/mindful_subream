@@ -3,6 +3,7 @@ from pathlib import Path
 import argparse
 
 from mindful_core.utils.misc import load_json
+from mindful_core.utils.data_constants import SCAN_ID, SUBSET_ID
 
 from mindful_subream.dataset.dataset_master_builder import SubreamMasterBuilder
 from mindful_subream.scripts.organize_raw_data_augmentations import organize_raw_data_augmentations
@@ -39,10 +40,10 @@ def aggregate_folds_subset(subsets_folds: list[list[Path]],
     aggregated_folds = []
     for ith_subsets_folds in subsets_folds:
         updated_folds = []
-        reference_fold = pd.read_csv(ith_subsets_folds[0], index_col="ScanID")
+        reference_fold = pd.read_csv(ith_subsets_folds[0], index_col=SCAN_ID)
         for augmentation, fold_path in zip(augmentations, ith_subsets_folds):
-            fold = pd.read_csv(fold_path, index_col="ScanID")
-            fold["SubsetID"] = reference_fold["SubsetID"]
+            fold = pd.read_csv(fold_path, index_col=SCAN_ID)
+            fold[SUBSET_ID] = reference_fold[SUBSET_ID]
             fold.index = fold.index.map(lambda x: "{}_{}".format(x, augmentation))
             updated_folds.append(fold)
         aggregated_fold = pd.concat(updated_folds, axis="index")

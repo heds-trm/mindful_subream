@@ -2,7 +2,7 @@ import pandas as pd
 from pathlib import Path
 import argparse
 
-from mindful_core.utils.misc import load_json
+from mindful_core.utils.misc import try_load_json
 from mindful_core.utils.data_constants import SCAN_ID, SUBSET_ID
 
 from mindful_subream.dataset.dataset_master_builder import SubreamMasterBuilder
@@ -78,7 +78,7 @@ def aggregate_all_folds(all_folds: list[dict[str, dict[str, dict[str, list[Path]
 def build_raw_data_aug_dataset(template_path: Path,
                                resume_from: str | None,
                                verbose=True) -> None:
-    template = load_json(template_path)
+    template = try_load_json(template_path, "Raw Data Augmentations template")
 
     patients_images_root = Path(template["patients_images"])
     output_root = Path(template["output_path"])

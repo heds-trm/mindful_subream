@@ -11,7 +11,7 @@ with stdout_redirected(), stderr_redirected():
     import argparse
 
     from mindful_core.utils.dicom import DICOMAttributesCollection, load_dicom_sitk
-    from mindful_core.utils.misc import find_first_path, load_json
+    from mindful_core.utils.misc import find_first_path, try_load_json
     from mindful_core.experiments.inference import restore_model, load_sample
     from mindful_core.data.modalities import ModalityType
     from mindful_core.models.model_output import ClassifierOutput
@@ -303,8 +303,8 @@ def run_inference(inputs_folder: str | Path = "/input/",
     export_point_predictions(predictions_path, list(lesions_point_predictions.values()))
     export_occlusion_map(occlusion_maps, lesion_crops, image_path, occlusion_map_filename)
 
-    patient_data = load_json(patient_information_path)
-    lesions_geometry_list = load_json(lesion_information_path)["lesions"]
+    patient_data = try_load_json(patient_information_path, "Patient Information")
+    lesions_geometry_list = try_load_json(lesion_information_path, "Lesion Geometric Data")["lesions"]
     lesions_geometry = {}
     for lesion_geometry in lesions_geometry_list:
         lesion_id = lesion_geometry.pop("name")

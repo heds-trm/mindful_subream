@@ -1,12 +1,12 @@
 import numpy as np
 from pathlib import Path
 
-from mindful_core.utils.misc import load_json
+from mindful_core.utils.misc import try_load_json
 
 
 def parse_suspected_lesions_positions(suspected_lesions_positions_path: str | Path
                                       ) -> dict[str, np.ndarray]:
-    suspected_lesions_data = load_json(suspected_lesions_positions_path)
+    suspected_lesions_data = try_load_json(suspected_lesions_positions_path, "Suspected Lesions Positions")
     points: list[dict[str, str | list[float]]] = suspected_lesions_data["points"]
 
     suspected_lesions_positions: dict[str, np.ndarray] = {}
@@ -27,10 +27,10 @@ def parse_scalar_data(patient_information_path: str | Path,
     if (not patient_information_path.exists()) or (not lesion_information_path.exists()):
         return None
 
-    patient_information = load_json(patient_information_path)
+    patient_information = try_load_json(patient_information_path, "Patient Information")
     age: float | None = patient_information.get("age")
 
-    lesion_information = load_json(lesion_information_path)
+    lesion_information = try_load_json(lesion_information_path, "Lesion Geometric Data")
     compute_lesion_geometry = lesion_information["compute_lesion_geometry"]
     if compute_lesion_geometry:
         raise NotImplementedError("`compute_lesion_geometry=True` is not supported yet.")
@@ -77,7 +77,7 @@ def parse_categorical_data(patient_information_path: str | Path) -> dict[str, st
     if not patient_information_path.exists():
         return None
 
-    patient_information = load_json(patient_information_path)
+    patient_information = try_load_json(patient_information_path, "Patient Information")
     if "age" in patient_information:
         patient_information.pop("age")
     return patient_information

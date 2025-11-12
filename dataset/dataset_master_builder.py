@@ -9,7 +9,7 @@ from datetime import datetime
 import os
 import shutil
 
-from mindful_core.utils.misc import load_json
+from mindful_core.utils.misc import try_load_json
 
 from mindful_subream.dataset.build.build_data import SubreamBuildData
 from mindful_subream.dataset.build.build_logger import SubreamBuildLogger
@@ -74,7 +74,7 @@ class SubreamMasterBuilder(object):
             self.config = config
         else:
             self.config_path = Path(config)
-            self.config = load_json(config)
+            self.config = try_load_json(config, "Subream Master Dataset Builder config")
         self.datestamp = datetime.now().date()
 
         self.seed = self.config.get("seed", 3930787959)

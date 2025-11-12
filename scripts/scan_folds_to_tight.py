@@ -2,6 +2,8 @@ import pandas as pd
 from pathlib import Path
 import argparse
 
+from mindful_core.utils.data_constants import SCAN_ID
+
 
 def remove_lesion_index(scan_id: str) -> str:
     return scan_id[:-2]
@@ -25,9 +27,9 @@ def main():
 
     for fold_path in folds_paths:
         fold = pd.read_csv(fold_path)
-        fold["ScanID"] = fold["ScanID"].apply(remove_lesion_index)
+        fold[SCAN_ID] = fold[SCAN_ID].apply(remove_lesion_index)
         fold["ScanFilepath"] = fold["ScanFilepath"].apply(update_scan_filepath)
-        fold: pd.DataFrame = fold.drop_duplicates("ScanID", keep="first")
+        fold: pd.DataFrame = fold.drop_duplicates(SCAN_ID, keep="first")
         fold.to_csv(fold_path, index=False)
 
 

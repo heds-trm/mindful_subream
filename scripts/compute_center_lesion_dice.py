@@ -2,7 +2,9 @@ import pandas as pd
 from pathlib import Path
 import argparse
 
+from mindful_core.utils.data_constants import SCAN_ID
 from mindful_core.scripts.outcomes.compute_average_generalized_score import compute_average_generalized_dice
+
 from mindful_subream.dataset.lesion_attributes_extraction import process_folder as extract_lesion_attributes
 
 
@@ -94,7 +96,7 @@ def main():
     segmentation_attributes.to_csv(export_folder / "segmentation_attributes.csv")
 
     if scalar_features_path is not None:
-        scalar_features = pd.read_csv(scalar_features_path, index_col="ScanID")
+        scalar_features = pd.read_csv(scalar_features_path, index_col=SCAN_ID)
         segmentation_features = {column: {} for column in scalar_features.columns}
         copied_columns = ["age",
                           #   "bounding_box_center_x","bounding_box_center_y","bounding_box_center_z",

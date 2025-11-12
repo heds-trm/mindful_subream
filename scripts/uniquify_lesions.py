@@ -2,6 +2,8 @@ import pandas as pd
 from pathlib import Path
 import argparse
 
+from mindful_core.utils.data_constants import SCAN_ID
+
 
 def remove_lesion_index(scan_id: str):
     return "_".join(scan_id.split("_")[:-1])
@@ -16,7 +18,7 @@ def main():
     source_path = Path(args.source)
     destination_path = Path(args.destination)
 
-    data_frame = pd.read_csv(source_path, index_col="ScanID")
+    data_frame = pd.read_csv(source_path, index_col=SCAN_ID)
     data_frame.index = data_frame.index.map(remove_lesion_index)
     data_frame = data_frame[~data_frame.index.duplicated(keep="first")]
 

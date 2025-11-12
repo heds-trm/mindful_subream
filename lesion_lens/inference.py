@@ -7,16 +7,16 @@ with stdout_redirected(), stderr_redirected():
     import os
     from pathlib import Path
     import warnings
-    from typing import Union
     import argparse
 
     from mindful_core.utils.dicom import DICOMAttributesCollection, load_dicom_sitk
-    from mindful_core.utils.misc import find_first_path, load_json
+    from mindful_core.utils.misc import find_first_path, try_load_json
     from mindful_core.experiments.inference import restore_model, load_sample
     from mindful_core.data.modalities import ModalityType
     from mindful_core.models.model_output import ClassifierOutput
     from mindful_core.analysis.visualization import VisualizerGroup, Visualizer
 
+    from mindful_subream.lesion_lens.warnings_context_manager import WarningsContextManager
     from mindful_subream.lesion_lens.parsing import (parse_suspected_lesions_positions,
                                                      parse_scalar_data,
                                                      parse_categorical_data)
@@ -38,36 +38,6 @@ class InferenceException(Exception):
 
     def __str__(self) -> str:
         return "LesionLens encountered the following error during inference: {}".format(self.message)
-
-
-class WarningsContextManager(object):
-    """
-        Used to differentiate warnings created by this script for users and other warnings.
-    """
-    manager: Union["WarningsContextManager", None] = None
-
-    def __init__(self):
-        self.warnings: list[str] = []
-
-    def __enter__(self):
-        if self.manager is None:
-            self.manager = self
-
-        return self.manager
-
-    def __exit__(self, exc_type, exc_val, exc_tb) -> bool | None:
-        self.manager = None
-        return None
-
-    @classmethod
-    def warn(cls, message: str) -> None:
-        if cls.manager is None:
-            raise RuntimeError("Tried to use an WarningsContextManager outside of context.")
-        cls.manager.warnings.append(message)
-
-    @property
-    def has_warnings(self) -> bool:
-        return len(self.warnings) > 0
 
 
 # region Run
@@ -253,13 +223,14 @@ def run_inference(inputs_folder: str | Path = "/input/",
     visualizers_path = find_first_path(model_folder.parent, "*.json")
     # endregion
 
+    image = load_dicom_sitk(image_path)
+    image = check_image(image)
+
     # region Main inference loop
     lesion_crops: dict[str, LesionCrop] = {}
     for lesion_id in suspected_lesions_positions:
         # region 1 - Get lesion inputs
         lesion_position = suspected_lesions_positions[lesion_id]
-        image = load_dicom_sitk(image_path)
-        image = check_image(image)
         lesion_crop_path, lesion_crop = crop_lesion(image, lesion_position, lesion_id)
         lesion_crops[lesion_id] = lesion_crop
         inputs = {
@@ -303,8 +274,8 @@ def run_inference(inputs_folder: str | Path = "/input/",
     export_point_predictions(predictions_path, list(lesions_point_predictions.values()))
     export_occlusion_map(occlusion_maps, lesion_crops, image_path, occlusion_map_filename)
 
-    patient_data = load_json(patient_information_path)
-    lesions_geometry_list = load_json(lesion_information_path)["lesions"]
+    patient_data = try_load_json(patient_information_path, "Patient Information")
+    lesions_geometry_list = try_load_json(lesion_information_path, "Lesion Geometric Data")["lesions"]
     lesions_geometry = {}
     for lesion_geometry in lesions_geometry_list:
         lesion_id = lesion_geometry.pop("name")

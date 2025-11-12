@@ -4,7 +4,7 @@ import pandas as pd
 from pathlib import Path
 from typing import Any
 
-from mindful_core.utils.misc import load_table, load_json
+from mindful_core.utils.misc import load_table, try_load_json
 from mindful_core.utils.parsing import parse_last_number
 
 from mindful_subream.dataset.build.build_logger import SubreamBuildLogger
@@ -159,7 +159,8 @@ class SubreamBuildData(SubreamInputData):
         self.folds: dict[str, dict[str, dict[str, list[Path]]]] = {}
 
         self.resume_from_path = resume_from
-        self.resume_from = load_json(resume_from) if resume_from is not None else {}
+        self.resume_from = (try_load_json(resume_from, "Subream Build Data Resume config")
+                            if resume_from is not None else {})
 
         self.reference_folds = Path(reference_folds) if reference_folds is not None else None
 

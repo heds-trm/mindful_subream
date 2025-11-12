@@ -1,3 +1,5 @@
+# Les fichiers ignorés pas copiés en open source
+
 # IDEA folder
 .idea
 
@@ -9,3 +11,10 @@
 
 # Poetry
 poetry.lock
+
+
+# Sink
+_sink
+
+# Configs
+_configs

@@ -17,7 +17,10 @@ poetry.lock
 _sink
 
 # Configs
-_configs
+_configs*
 
 # Sink
 _sink
+
+# GC script
+GC_script

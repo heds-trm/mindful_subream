@@ -1,0 +1,56 @@
+2026-04-11T11:28:48.407946 - SUCCESS: Mask filenames and types match.
+2026-04-11T11:28:48.410999 - SUCCESS: No problem found when checking labels in the provided tables.
+2026-04-11T11:28:48.411175 - Running Subream dataset builder with the following steps:
+	- SubreamPatientLoader
+	- SubreamROIExtractor
+	- SubreamGeometryExtractor
+	- SubreamMIPExtractor
+	- SubreamFoldsBuilder
+	- SubreamClinicalDataBuilder
+	- SubreamReadmeMaker
+2026-04-11T11:28:48.411206 - Seed is: 3930787959
+
+2026-04-11T11:28:48.914607 - ===== Running builder `SubreamPatientLoader` =====
+2026-04-11T12:20:53.561390 - SUCCESS: No wrong labels in ROI points.
+2026-04-11T12:20:53.561596 - SUCCESS: No unknown samples in ROI points.
+
+2026-04-11T12:20:53.655146 - ===== Running builder `SubreamROIExtractor` =====
+2026-04-11T12:44:07.445818 - 93 patient images with no points: 101, 102, 113, 117, 13, 34, 35, 39, 40, 41, 43, 46, 47, 48, 61, 70, 71, 95, 96, 306, 307, 308, 309, 310, 311, 312, 273, 281, 283, 284, 287, 288, 291, 292, 293, 296, 277, 278, 282, 121, 204, 216, 224, 226, 234, 242, 244, 250, 254, 272, 302, 303, 304, 305, 136, 137, 142, 144, 147, 149, 150, 151, 154, 157, 160, 163, 167, 169, 174, 176, 180, 187, 191, 192, 193, 196, 197, 198, 199, 203, 209, 215, 223, 225, 235, 237, 239, 241, 253, 255, 261, 267, 269
+
+2026-04-11T12:44:25.697351 - ===== Running builder `SubreamGeometryExtractor` =====
+
+2026-04-11T12:44:25.697416 - ===== Running builder `SubreamMIPExtractor` =====
+2026-04-12T06:33:35.455912 - SUCCESS: MIPs successfully processed.
+2026-04-12T06:33:45.084518 - SUCCESS: MIPs successfully saved to disk.
+
+2026-04-12T06:33:45.084644 - ===== Running builder `SubreamFoldsBuilder` =====
+2026-04-12T06:33:45.084678 - Generating folds for mode `b_g_m` (balance lymphnodes = True)
+2026-04-12T06:33:46.684795 - Generating folds for mode `bg_m` (balance lymphnodes = True)
+2026-04-12T06:33:48.291933 - Generating folds for mode `b_m` (balance lymphnodes = True)
+2026-04-12T06:33:49.428263 - Generating folds for mode `g_m` (balance lymphnodes = True)
+2026-04-12T06:33:50.661719 - Generating folds for mode `bm_g` (balance lymphnodes = True)
+2026-04-12T06:33:52.214648 - Generating folds for mode `b_g` (balance lymphnodes = True)
+2026-04-12T06:33:53.610875 - Generating folds for mode `b_g_m` (balance lymphnodes = False)
+2026-04-12T06:33:55.344834 - Generating folds for mode `bg_m` (balance lymphnodes = False)
+2026-04-12T06:33:57.048468 - Generating folds for mode `b_m` (balance lymphnodes = False)
+2026-04-12T06:33:58.176184 - Generating folds for mode `g_m` (balance lymphnodes = False)
+2026-04-12T06:33:59.646682 - Generating folds for mode `bm_g` (balance lymphnodes = False)
+2026-04-12T06:34:01.363506 - Generating folds for mode `b_g` (balance lymphnodes = False)
+
+2026-04-12T06:35:13.651162 - ===== Running builder `SubreamClinicalDataBuilder` =====
+
+2026-04-12T06:35:13.661466 - ===== Running builder `SubreamReadmeMaker` =====
+2026-04-12T06:35:13.661725 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11` contains a `README.txt`.
+2026-04-12T06:35:13.662054 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/images` contains a `README.txt`.
+2026-04-12T06:35:13.663811 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/images/subtracted` contains a `README.txt`.
+2026-04-12T06:35:13.757657 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/images/default` contains a `README.txt`.
+2026-04-12T06:35:13.856938 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/images/mip` contains a `README.txt`.
+2026-04-12T06:35:13.911297 - ReadmeMaker - Warning: Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/masks` does not contain a `README.txt` !
+2026-04-12T06:35:13.912600 - ReadmeMaker - Warning: Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/masks/roi` does not contain a `README.txt` !
+2026-04-12T06:35:13.954713 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/folds` contains a `README.txt`.
+2026-04-12T06:35:13.954884 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/folds/scan` contains a `README.txt`.
+2026-04-12T06:35:13.955065 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/folds/scan/balanced_lymphnodes` contains a `README.txt`.
+2026-04-12T06:35:13.955588 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/folds/scan/default` contains a `README.txt`.
+2026-04-12T06:35:13.956101 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/folds/mip` contains a `README.txt`.
+2026-04-12T06:35:13.956275 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/folds/mip/balanced_lymphnodes` contains a `README.txt`.
+2026-04-12T06:35:13.956796 - ReadmeMaker - Folder `/data/projects/subream/data/processed/classification/image_rois/MIP/2026-04-11/folds/mip/default` contains a `README.txt`.

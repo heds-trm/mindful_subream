@@ -7,24 +7,34 @@ from mindful_core.data.subset_id import SubsetID
 from mindful_core.models.model_output import ClassifierOutput, PrototypeOutput
 from mindful_core.models.classification.abstract_classifier import AbstractClassifier
 from mindful_core.models.classification.dense_classifier import DenseClassifier
-from mindful_core.models.representation.encoders.factory import FusionTransformer, MultiModalEncoder, make_encoders
+from mindful_core.models.representation.encoders.factory import (
+    FusionTransformer, 
+    MultiModalEncoder, 
+    make_encoders, 
+    LSTMFusion
+)
 from mindful_core.models.loss_aggregator import LossAggregator
 from mindful_core.models.attention_interface import AttentionInterface
 from mindful_core.utils.metrics import batched_corrcoef
+from mindful_subream.models.classification.sieve import MultimodalSieve
 
 
 class TemporalSteps(MultimodalSieve):
+    """
+    Modèle ViT-LSTM avec détachement stochastique des gradients
+    pour économiser la mémoire lors du traitement des phases
+    """
     # region Class/Subclass methods
     @classmethod
     def module_identifier(cls) -> str:
         return "temporal_steps"
     
-    def encode_modalities(self,
-                        inputs: Sequence[torch.Tensor],
-                        ) -> torch.Tensor:
-        encoded = super(TemporalSteps, self).encode_modalities(inputs)
-        encoded = self.random_branch_detached(encoded)
-        return encoded
+#    def encode_modalities(self,
+#                        inputs: Sequence[torch.Tensor],
+#                        ) -> torch.Tensor:
+#        encoded = super(TemporalSteps, self).encode_modalities(inputs)
+#        encoded = self.random_branch_detached(encoded)
+#        return encoded
 
     # endregion
 
@@ -48,159 +58,180 @@ class TemporalSteps(MultimodalSieve):
                  use_focal_loss=False,
                  sieve_mutual_lambda=1e-1,
                  sieve_exclusive_lambda=1e-1,
+                
+                # nouveaux paramètres pour le stochastic detach
+                 stochastic_detach_prob: float = 0.0,  # Probabilité de détacher chaque phase
+                 stochastic_detach_mode: str = "random",  # "random" = chaque phase a une proba d'être detach, "keep_first_last" = garde toujours la 1ère phase et dernière phase et detach randomly le milieu, "keep_every_n"= garde 1 phase sur N (si N=3 --> 0, 3, 6, 9, 12)
+                 keep_every_n: int = 2,  # Si mode "keep_every_n", garder 1 phase sur N
+                 min_phases_with_grad: int = 2,  # Nombre minimum de phases avec gradient
+                 
                  **kwargs):
-        hidden_size = self._get_hidden_size(encoders_config)
-        super(TemporalSteps, self).__init__(class_count=class_count,
-                                              optimizer_config=optimizer_config,
-                                              label_smoothing=label_smoothing,
-                                              confidence_lambda=confidence_lambda,
-                                              confidence_corr_lambda=confidence_corr_lambda,
-                                              confidence_budget=confidence_budget,
-                                              hidden_size=hidden_size,
-                                              prototype_model_config=prototype_model_config,
-                                              prototype_lambda=prototype_lambda,
-                                              positive_class=positive_class,
-                                              use_focal_loss=use_focal_loss,
-                                              **kwargs)
-
-        encoders = make_encoders(encoders_config)
-        for modality, encoder in encoders.items():
-            self.register_module("{}_encoder".format(modality), encoder)
-        self.modalities = list(encoders.keys())
-        self.modality_encoders = list(encoders.values())
-
-        self.sieve = FusionTransformer(input_size=self.hidden_size, pooling=None,
-                                       project_output=False, add_cls_token=True,
-                                       modality_count=self.modality_count,
-                                       **sieve_config)
-
-        self._yield_confidence = yield_confidence
-        if yield_confidence:
-            class_count += 1
-        self.representation_aggregator = FusionTransformer(input_size=self.hidden_size, pooling="cls",
-                                                           project_output=False, add_cls_token=True,
-                                                           modality_count=self.modality_count + 1,
-                                                           pre_activation=None,
-                                                           **classifier_config)
-        representation_size = self.prototype_model.prototype_count if self.train_prototype_model else self.hidden_size
-        self.final_classifier = DenseClassifier(input_dimension=representation_size,
-                                                features=[],
-                                                class_count=class_count,
-                                                yield_confidence=yield_confidence)
-
-        self.sieve_mutual_lambda = sieve_mutual_lambda
-        self.sieve_exclusive_lambda = sieve_exclusive_lambda
-
-    def forward(self,
-                inputs,
-                *args,
-                compute_sieve_loss: bool = False,
-                **kwargs
-                ) -> ClassifierOutput:
-        inputs, mask = MultiModalEncoder.unpack_mask(inputs, self.modality_count)
-
-        early_representations = self.encode_modalities(inputs)
-        sieve_outputs = self.sieve(early_representations, mask=mask)
-        representations = self.representation_aggregator(sieve_outputs)
-
-        if self.train_prototype_model:
-            prototype_outputs: PrototypeOutput = self.prototype_model(representations)
-            classifier_outputs: ClassifierOutput = self.final_classifier(prototype_outputs.similarities)
-            classifier_outputs.prototype_outputs = prototype_outputs
+        super(TemporalSteps, self).__init__(encoders_config=encoders_config,
+                                            sieve_config=sieve_config,
+                                            classifier_config=classifier_config,
+                                            
+                                            class_count=class_count,
+                                            optimizer_config=optimizer_config,
+                                            label_smoothing=label_smoothing,
+                                            
+                                            yield_confidence = yield_confidence,
+                                            confidence_lambda=confidence_lambda,
+                                            confidence_corr_lambda=confidence_corr_lambda,
+                                            confidence_budget=confidence_budget,
+                                            
+                                            prototype_model_config=prototype_model_config,
+                                            prototype_lambda=prototype_lambda,
+                                            
+                                            positive_class=positive_class,
+                                            use_focal_loss=use_focal_loss,
+                                            sieve_mutual_lambda=sieve_mutual_lambda,
+                                            sieve_exclusive_lambda=sieve_exclusive_lambda,
+                                            **kwargs)
+        
+        # Paramètres stochastic detach
+        self.stochastic_detach_prob = stochastic_detach_prob
+        self.stochastic_detach_mode = stochastic_detach_mode
+        self.keep_every_n = keep_every_n
+        self.min_phases_with_grad = min_phases_with_grad
+        
+    # region nouvelle partie 
+    def make_sieve(self, **sieve_config):
+        return make_sieve_steps_fusion_module(input_size=self.hidden_size, pooling=None,
+                                              add_cls_token=True,
+                                              modality_count=self.modality_count,
+                                              **sieve_config)
+        
+    def make_representation_aggregator(self, **classifier_config):
+        return make_sieve_steps_fusion_module(input_size=self.hidden_size, pooling="cls", 
+                                              add_cls_token=True,
+                                              modality_count=self.modality_count + 1,
+                                              pre_activation=None,
+                                              **classifier_config)
+    
+    def random_branch_detached(self, encoded: torch.Tensor) -> torch.Tensor:
+        """
+        Applique un détachement stochastique des gradients sur les phases temporelles.
+        
+        Pour un batch de 12 phases IRM encodées par ViT, détache aléatoirement
+        certaines phases pour économiser la mémoire GPU lors du backprop.
+        
+        Args:
+            encoded: Tensor [batch_size, num_phases, hidden_size]
+                    où num_phases
+        
+        Returns:
+            Tensor avec certaines phases détachées selon la stratégie choisie
+        """
+        if not self.training:
+            # En mode évaluation, pas de détachement
+            return encoded
+        
+        batch_size, num_phases, hidden_size = encoded.shape
+        
+        # Déterminer quelles phases garder avec gradient
+        keep_grad_mask = self._get_keep_gradient_mask(num_phases)
+        if all(keep_grad_mask):
+            raise RuntimeError("tout est bloque")
+        
+        # Appliquer le détachement phase par phase
+        detached_encoded = []
+        for phase_idx in range(num_phases):
+            encoded_phase = encoded[:, phase_idx:phase_idx+1, :]
+            if keep_grad_mask[phase_idx]:
+                # Garder le gradient pour cette phase
+                detached_encoded.append(encoded_phase)
+            else:
+                # Détacher le gradient pour cette phase
+                detached_encoded.append(encoded_phase.detach())
+            print(phase_idx, keep_grad_mask[phase_idx])
+        
+        return torch.cat(detached_encoded, dim=1)
+    
+    def _get_keep_gradient_mask(self, num_phases: int) -> list[bool]:
+        """
+        Génère un masque indiquant quelles phases garder avec gradient.
+        
+        Args:
+            num_phases: Nombre total de phases
+        
+        Returns:
+            Liste de booléens [True, False, True, ...] de longueur num_phases
+        """
+        if self.stochastic_detach_mode in ["random", "keep_first_last"]:
+            # Mode aléatoire : chaque phase a une probabilité p d'être gardée
+            rand = torch.rand([num_phases])
+            keep = rand < (1.0 - self.stochastic_detach_prob)
+            
+            if self.stochastic_detach_mode == "keep_first_last":
+                keep[0] = keep[-1] = True
+                
+            total_kept = keep.to(torch.int32).sum()
+            
+            # S'assurer d'avoir au moins min_phases_with_grad phases avec gradient
+            if total_kept < self.min_phases_with_grad:
+                order = torch.argsort(rand)
+                keep_count = self.min_phases_with_grad
+                detach_count = num_phases - self.min_phases_with_grad
+                keep = torch.as_tensor([True] * keep_count + [False] * detach_count)
+                keep = keep[order]
+        
+        elif self.stochastic_detach_mode == "keep_every_n":
+            # Garder 1 phase sur N de façon déterministe
+            keep = [i % self.keep_every_n == 0 for i in range(num_phases)]
         else:
-            classifier_outputs = self.final_classifier(representations)
-        classifier_outputs.confidence_threshold = self.confidence_threshold
-
-        if compute_sieve_loss:
-            self.compute_sieve_information_loss(early_representations, sieve_outputs)
-
-        return classifier_outputs
-
-    # def encode_modalities(self,
-                          # inputs: Sequence[torch.Tensor],
-                          # ) -> torch.Tensor:
-        # inputs = [encoder(modality)
-                  # for encoder, modality
-                  # in zip(self.modality_encoders, inputs)]
-        # return torch.stack(inputs, dim=1)
-
-    def base_step(self, batch, subset_id: SubsetID, **model_kwargs) -> STEP_OUTPUT:
-        return super(TemporalSteps, self).base_step(batch, subset_id, compute_sieve_loss=True, **model_kwargs)
-
-    def compute_sieve_information_loss(self,
-                                       early_representations: torch.Tensor,
-                                       sieve_outputs: torch.Tensor
-                                       ) -> LossAggregator:
-        # early_representations:    [batch_size, modality_count,     hidden_size]
-        # sieve_outputs:            [batch_size, modality_count + 1, hidden_size]
-
-        # todo: add a hparam that enables/disables detach() on tensor (on by default)
-        early_representations = early_representations.detach()
-
-        mutual_token, exclusive_tokens = sieve_outputs[:, :1], sieve_outputs[:, 1:]
-        # mutual_corrcoef = batched_corrcoef(torch.concat([mutual_token, early_representations], dim=1))
-        # exclusive_corrcoef = batched_corrcoef(torch.concat([mutual_token.detach(), exclusive_tokens], dim=1))
-
-        mutual_corrcoef = batched_corrcoef(mutual_token, early_representations, absolute=True)
-        exclusive_corrcoef = batched_corrcoef(mutual_token.detach(), exclusive_tokens, absolute=True)
-
-        compare_count = ((self.modality_count + 1) * self.modality_count) // 2
-        mutual_information_loss = 1.0 - mutual_corrcoef[:, 0, 1:].mean()
-        exclusive_information_loss = (exclusive_corrcoef[..., 1:].sum(dim=1) / compare_count).mean()
-
-        # mutual_information_loss = torch.abs(mutual_information_loss)
-        # exclusive_information_loss = torch.abs(exclusive_information_loss)
-
-        self.loss_aggregator.add_loss(mutual_information_loss, "mutual_information_loss", self.sieve_mutual_lambda)
-        self.loss_aggregator.add_loss(exclusive_information_loss, "exclusive_information_loss",
-                                      self.sieve_exclusive_lambda)
-
-        return self.loss_aggregator
-
-    @property
-    def modality_count(self) -> int:
-        return len(self.modalities)
-
-    @staticmethod
-    def _get_hidden_size(encoders_config: dict[str, dict[str, Any]]) -> int:
-        hidden_sizes = [encoder_config["output_dimension"] for encoder_config in encoders_config.values()]
-        hidden_size = hidden_sizes[0]
-
-        if not isinstance(hidden_size, int):
-            raise ValueError("Encoder output dimension must be an integer, got {}({})"
-                             .format(hidden_size, type(hidden_size)))
-        all_same_size = all([encoder_hidden_size == hidden_size for encoder_hidden_size in hidden_sizes[1:]])
-
-        if not all_same_size:
-            raise ValueError("All encoder output dimensions must match "
-                             "for a MultimodalSieve, got {}".format(hidden_sizes))
-
-        return hidden_size
-
-    @property
-    def yield_confidence(self) -> bool:
-        return self._yield_confidence
+            # Mode désactivé : tout garder
+            keep = [True] * num_phases
+            
+        return keep
+    
+    def encode_modalities(self,
+                        inputs: Sequence[torch.Tensor],
+                        ) -> torch.Tensor:
+        """
+        Encode chaque modalité (phase temporelle IRM) avec le ViT
+        puis applique le détachement stochastique.
+        """
+        # Appel à la méthode parente pour encoder
+        encoded = super(TemporalSteps, self).encode_modalities(inputs)
+        
+        # Application du détachement stochastique
+        encoded = self.random_branch_detached(encoded)
+        
+        return encoded
+    # endregion    
 
     # region AttentionInterface
     def get_attention_modules(self) -> Union["AttentionInterface", list["AttentionInterface"]]:
-        return [self.sieve, self.representation_aggregator]
-
-    def get_attention_layers(self) -> list[nn.Module]:
-        raise RuntimeError("Use `get_attention_layers` from `self.sieve` and `self.representation_aggregator` instead.")
-
-    def get_attention_recordings(self, inputs: Any, outputs: Any) -> torch.Tensor | list[torch.Tensor]:
-        raise RuntimeError("Use `get_attention_recordings` from `self.sieve`"
-                           " and `self.representation_aggregator` instead.")
-
-    @property
-    def pooling_method(self) -> int | str:
-        return self.sieve.pooling_method
-
-    @property
-    def attention_rank(self) -> int:
-        return 1
-
-    def reduce_1d_pooling_attention(self, attention_maps: torch.Tensor) -> torch.Tensor:
-        return self.sieve.reduce_1d_pooling_attention(attention_maps)
+        raise NotImplementedError("Need first to check if sieve and representation_aggregator are transformers")
+        # return [self.sieve, self.representation_aggregator]
 
     # endregion
+
+def make_sieve_steps_fusion_module(input_size: int,
+                                   pooling,
+                                   add_cls_token: bool,
+                                   modality_count: int,
+                                   pre_activation: str | None = "ReLU",
+                                   project_output: bool = False,
+                                   use_lstm: bool = False,
+                                   **kwargs
+                                   ) -> FusionTransformer | LSTMFusion:
+    if use_lstm:
+        proj_size = input_size if project_output else 0
+        bidirectional = kwargs.get("bidirectional", False)
+        if bidirectional:
+            proj_size = proj_size // 2
+        return LSTMFusion(input_size=input_size, 
+                          pooling=pooling, 
+                          use_cls_token=add_cls_token,
+                          proj_size=proj_size,
+                          **kwargs)
+    else:
+        return FusionTransformer(input_size=input_size, 
+                                 pooling=pooling,
+                                 add_cls_token=add_cls_token,
+                                 modality_count=modality_count,
+                                 pre_activation=pre_activation,
+                                 project_output=project_output,
+                                 **kwargs)
+    

@@ -20,7 +20,7 @@ from mindful_subream.dataset.build.build_steps import (
     SubreamTICExtractor,
     SubreamROIExtractor,
     SubreamBreastExtractor,
-    # SubreamMIPExtractor,
+    SubreamMIPExtractor,
     SubreamFoldsBuilder,
     SubreamClinicalDataBuilder,
     SubreamReadmeMaker
@@ -112,9 +112,9 @@ class SubreamMasterBuilder(object):
 
             SubreamROIExtractor,
             SubreamGeometryExtractor,
-            SubreamBreastExtractor,
-            # SubreamMIPExtractor,
-            SubreamTICExtractor,
+            # SubreamBreastExtractor,
+            SubreamMIPExtractor,
+            # SubreamTICExtractor,
 
             SubreamFoldsBuilder,
             SubreamClinicalDataBuilder,
@@ -203,3 +203,4 @@ class SubreamMasterBuilder(object):
     def get_patient_folders(self) -> dict[str, Path]:
         return get_patient_folders(Path(self.config["patients_images"]))
     # endregion
+

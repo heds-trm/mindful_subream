@@ -161,8 +161,11 @@ class SubreamMIPExtractor(SubreamBuildStep):
                         ) -> list[SimpleITK.Image]:
         inputs = {key: SubreamMIPExtractor.tensor_from_image(image) for key, image in zip(keys, images)}
         images_dict: dict[str, torch.Tensor] = augmentations(inputs)
-        images = [torch_image_to_simpleitk(image) for image in images_dict.values()]
+        # images = [torch_image_to_simpleitk(image) for image in images_dict.values()]
+        # return images
+        images = [torch_image_to_simpleitk(img, original=images[i]) for i, img in enumerate(images_dict.values())]  # <-- seul changement
         return images
+    # 12.04.2026 j'ai changé aussi ici en fonction de ce qui a été changé à la fin
 
     @staticmethod
     def tensor_from_image(image: SimpleITK.Image, to_gpu: bool = False) -> torch.Tensor:
@@ -270,6 +273,12 @@ def extract_mip_phase(image: SimpleITK.Image,
 def torch_image_to_simpleitk(image: torch.Tensor, original: SimpleITK.Image = None) -> SimpleITK.Image:
     image = torch.squeeze(image, dim=0)
     image = image.cpu().numpy()
+    
+    # rajout le 12.04.2026 ces 2 lignes de code, car images augmentée vides
+    if original is not None:
+        original_dtype = SimpleITK.GetArrayFromImage(original).dtype
+        image = image.astype(original_dtype)
+        
     output = SimpleITK.GetImageFromArray(image)
     if original is not None:
         output.SetSpacing(original.GetSpacing())

@@ -46,7 +46,10 @@ class MultimodalSieve(AbstractClassifier, AttentionInterface):
                  sieve_mutual_lambda=1e-1,
                  sieve_exclusive_lambda=1e-1,
                  **kwargs):
-        hidden_size = self._get_hidden_size(encoders_config)
+        if "hidden_size" in kwargs:
+            hidden_size = kwargs.pop("hidden_size")
+        else:
+            hidden_size = self._get_hidden_size(encoders_config)
         super(MultimodalSieve, self).__init__(class_count=class_count,
                                               optimizer_config=optimizer_config,
                                               label_smoothing=label_smoothing,
@@ -66,19 +69,13 @@ class MultimodalSieve(AbstractClassifier, AttentionInterface):
         self.modalities = list(encoders.keys())
         self.modality_encoders = list(encoders.values())
 
-        self.sieve = FusionTransformer(input_size=self.hidden_size, pooling=None,
-                                       project_output=False, add_cls_token=True,
-                                       modality_count=self.modality_count,
-                                       **sieve_config)
+        self.sieve = self.make_sieve(**sieve_config)
 
         self._yield_confidence = yield_confidence
         if yield_confidence:
             class_count += 1
-        self.representation_aggregator = FusionTransformer(input_size=self.hidden_size, pooling="cls",
-                                                           project_output=False, add_cls_token=True,
-                                                           modality_count=self.modality_count + 1,
-                                                           pre_activation=None,
-                                                           **classifier_config)
+        self.representation_aggregator = self.make_representation_aggregator(**classifier_config)
+        
         representation_size = self.prototype_model.prototype_count if self.train_prototype_model else self.hidden_size
         self.final_classifier = DenseClassifier(input_dimension=representation_size,
                                                 features=[],
@@ -87,6 +84,19 @@ class MultimodalSieve(AbstractClassifier, AttentionInterface):
 
         self.sieve_mutual_lambda = sieve_mutual_lambda
         self.sieve_exclusive_lambda = sieve_exclusive_lambda
+        
+    def make_sieve(self, **sieve_config):
+        return FusionTransformer(input_size=self.hidden_size, pooling=None,
+                                 project_output=False, add_cls_token=True,
+                                 modality_count=self.modality_count,
+                                 **sieve_config)
+        
+    def make_representation_aggregator(self, **classifier_config):
+        return FusionTransformer(input_size=self.hidden_size, pooling="cls",
+                                 project_output=False, add_cls_token=True,
+                                 modality_count=self.modality_count + 1,
+                                 pre_activation=None,
+                                 **classifier_config)
 
     def forward(self,
                 inputs,
@@ -160,7 +170,8 @@ class MultimodalSieve(AbstractClassifier, AttentionInterface):
 
     @staticmethod
     def _get_hidden_size(encoders_config: dict[str, dict[str, Any]]) -> int:
-        hidden_sizes = [encoder_config["output_dimension"] for encoder_config in encoders_config.values()]
+        hidden_sizes = [encoder_config["output_dimension"] for encoder_config in encoders_config.values() if
+                        isinstance(encoder_config, dict)]
         hidden_size = hidden_sizes[0]
 
         if not isinstance(hidden_size, int):

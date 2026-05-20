@@ -36,7 +36,7 @@ class SubreamMIPExtractor(SubreamBuildStep):
         self.log("SUCCESS: MIPs successfully saved to disk.")
 
     def extract_mips(self):
-        keys, augmentations = self.get_augmentations(phase_count=13)
+        keys, augmentations = self.get_augmentations(phase_count=10) #modif pour RHNe 
         shared_parameters = {
             "keys": keys,
             "augmentations": augmentations,
@@ -68,7 +68,7 @@ class SubreamMIPExtractor(SubreamBuildStep):
     def extract_mips_multithreaded(self):
         processes_count = min(os.cpu_count(), len(self.data.patients_ids))
 
-        keys, augmentations = self.get_augmentations(phase_count=13)
+        keys, augmentations = self.get_augmentations(phase_count=10) #modif pour RHNe 
         shared_parameters = {
             "keys": keys,
             "augmentations": augmentations,
@@ -165,7 +165,6 @@ class SubreamMIPExtractor(SubreamBuildStep):
         # return images
         images = [torch_image_to_simpleitk(img, original=images[i]) for i, img in enumerate(images_dict.values())]  # <-- seul changement
         return images
-    # 12.04.2026 j'ai changé aussi ici en fonction de ce qui a été changé à la fin
 
     @staticmethod
     def tensor_from_image(image: SimpleITK.Image, to_gpu: bool = False) -> torch.Tensor:
@@ -274,7 +273,7 @@ def torch_image_to_simpleitk(image: torch.Tensor, original: SimpleITK.Image = No
     image = torch.squeeze(image, dim=0)
     image = image.cpu().numpy()
     
-    # rajout le 12.04.2026 ces 2 lignes de code, car images augmentée vides
+
     if original is not None:
         original_dtype = SimpleITK.GetArrayFromImage(original).dtype
         image = image.astype(original_dtype)

@@ -1,0 +1,37 @@
+{
+    "name": "Points of interest",
+    "type": "Multiple points",
+    "points": [
+        {
+            "name": "nipple_left",
+            "point": [
+                74.96,
+                -98.49,
+                -28.75
+            ],
+            "probability": 1.0
+        },
+        {
+            "name": "nipple_right",
+            "point": [
+                -69.59,
+                -99.65,
+                -44.75
+            ],
+            "probability": 1.0
+        },
+        {
+            "name": "AMBL_003_1_0",
+            "point": [
+                -59.240165856950114,
+                -21.605818893387443,
+                -2.483395411605818
+            ],
+            "probability": 1.0
+        }
+    ],
+    "version": {
+        "major": 1,
+        "minor": 0
+    }
+}

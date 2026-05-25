@@ -1,0 +1,22 @@
+{
+    "lesions": [
+        {
+            "name": "AMBL_003_1_0",
+            "geometry": {
+                "volume": 653.6046964200001,
+                "flatness": 1.4306202506810253,
+                "elongation": 1.7732905900437312,
+                "bounding_box_size_x": 13.9461,
+                "bounding_box_size_y": 26.564,
+                "bounding_box_size_z": 14.0,
+                "bounding_box_center_x": -61.864750000000015,
+                "bounding_box_center_y": -22.274399999999986,
+                "bounding_box_center_z": -1.7559999999999576,
+                "equivalent_ellipsoid_diameter_1": 7.00641673643308,
+                "equivalent_ellipsoid_diameter_2": 10.023521667851623,
+                "equivalent_ellipsoid_diameter_3": 17.774616652700733
+            }
+        }
+    ],
+    "compute_lesion_geometry": false
+}

@@ -1,0 +1,51 @@
+{
+    "datasets": {
+        "mura_dataset": {
+            "folds": "<folds_dir>",
+            "categorical_features": "<folds_dir>/mura_body_parts.csv"
+        }
+    },
+    "shared": {
+        "default": {
+			"log_monitors": ["validation_loss_epoch"],
+			"save_last": true,
+            "batch_size": 32,
+            "num_workers": 0,
+            "accelerator": "gpu",
+            "max_epochs": 1,
+            "devices": 1,
+            "seeds": [
+                3930787959,
+                3048086154,
+                1308332165,
+                4198623908,
+                2751205564
+            ]
+        }
+    },
+    "experiments": {
+          "multimodal_densenet121_mura": {
+            "skip": "no",
+			"dataset": "mura_dataset",
+            "folds": "all",
+			"model": {
+                "class_name": "sieve",
+                "hparams": "<models_dir>/multimodal_densenet121_hparams.json"
+            },
+            "pipeline_config": "<pipelines_dir>/multimodal_mura.json",
+            "stages": "train test"
+        },
+        "multimodal_densenet121_pt_mura": {
+            "skip": "no",
+			"dataset": "mura_dataset",
+            "folds": "all",
+			"model": {
+                "class_name": "sieve",
+                "hparams": "<models_dir>/multimodal_densenet121_pt_hparams.json"
+            },
+            "pipeline_config": "<pipelines_dir>/multimodal_mura.json",
+            "stages": "train test"
+        }
+    },
+    "log_dir": "<logs_dir>"
+}

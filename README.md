@@ -16,6 +16,12 @@ The Smart and Ultrafast Breast MRI (SUBREAM) project was funded by the Swiss Can
 
 The project was approved by the Geneva Cantonal Ethics Committee (CCER) (Project-ID: 2019-00716). Informed consent was obtained from each patient for the re-use of anonymized breast imaging reports and MRI examinations.
 
+## Contributors and roles
+
+Contributor metadata is available in:
+- `CITATION.cff` for citation metadata
+- `CONTRIBUTORS.md` for detailed roles and contributions
+
 Powered by [![PyTorch](https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![SimpleITK](https://img.shields.io/badge/SimpleITK-blue?logo=github)](https://github.com/SimpleITK/SimpleITK)
 [![MONAI](https://img.shields.io/badge/MONAI-green?logo=github)](https://github.com/project-monai/monai)

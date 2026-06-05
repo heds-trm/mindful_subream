@@ -51,7 +51,7 @@ The `datasets` section defines the datasets available to experiments. The `categ
 
 # Experiments
 
-The `experiments` section defines the experiments to execute and is pretty similar to the unimodal counterpart. The main difference is that the model is an architecture able to fuse multimodal data, in our case our Sieve model with specific [hyperparameters](./MURA_HPARAMS_CONFIGURATION.md). 
+The `experiments` section defines the experiments to execute and is pretty similar to the unimodal counterpart. The main difference is that our "Sieve" model is an architecture able to fuse multimodal data, requiring specific [hyperparameters](./MURA_HPARAMS_CONFIGURATION.md). 
 
 Similarly, the pipeline to process multimodal data needs a dedicated [configuration file](./MURA_PIPELINE_CONFIGURATION.md).
 

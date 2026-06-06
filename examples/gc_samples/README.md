@@ -96,7 +96,7 @@ For example:
 Lesion Lens supports partial information, where the empty string "" is given to indicate missing information.
 
 > [!NOTE]
-> In the AMBL dataset, relevant information is found in the following columns:
+> In the AMBL dataset, relevant information is found in the following columns of the XLSX clinical information file:
 > - **age**: <col: age at MRI>
 > - **BRCA**: "positive" if <col:reason for referral ID#>=4 or "negative" otherwise, (or info in <col: additional reason for referral ID#>)
 > - **Chemo**: "" (no info available)

@@ -2,9 +2,7 @@
 
 This example is an extension of the [MURA example](https://github.com/heds-trm/mindful_core/tree/main/examples/mura) of `mindful_core`, where we classified radiographs of the upper extremities as being abnormal or normal using the publicly available [MURA](https://stanfordmlgroup.github.io/competitions/mura/) dataset.
 
-The difference here is that we used a _multimodal_ model based on the "Sieve" architecture showcased in our paper on breast cancer lesion in dynamic MRI:
-
-Lokaj, B., de Gevigney, V. D., Djema, D. A., Zaghir, J., Goldman, J. P., Bjelogrlic, M., ... & Schmid, J. (2025). Multimodal deep learning fusion of ultrafast-DCE MRI and clinical information for breast lesion classification. Computers in biology and medicine, 188, 109721. [10.1016/j.compbiomed.2025.109721](https://doi.org/10.1016/j.compbiomed.2025.109721)
+The difference here is that we used a _multimodal_ model based on the "Sieve" architecture showcased in our paper on breast cancer lesion in dynamic MRI[^1].
 
 ## Preparation
 
@@ -21,6 +19,9 @@ python ./make_mura_configs.py --output_dir <exp_data>/config --folds_dir <exp_da
 ```
 
 Output folders are automatically created. Folder `<exp_data>/logs` will contain the future output of the experiments.
+
+> [!NOTE]
+> Additional information on the configuration files is found [here](./MURA_EXPERIMENT_CONFIGURATION).
 
 ### Running experiments
 
@@ -76,3 +77,5 @@ This script must be called from the folder containing the `mindful_core`director
 The solid line represents the average over the folds, while the transparent area indicates the variation around the average.
 
 By default this command will include all experiments in the ROC figure, regardless their `skip` value in the corresponding config file. To change that, use the `--skip-experiments` option in the command line. 
+
+[^1]: Lokaj, B., de Gevigney, V. D., Djema, D. A., Zaghir, J., Goldman, J. P., Bjelogrlic, M., ... & Schmid, J. (2025). Multimodal deep learning fusion of ultrafast-DCE MRI and clinical information for breast lesion classification. Computers in biology and medicine, 188, 109721. 10.1016/j.compbiomed.2025.109721

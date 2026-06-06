@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Mindful-Subream"
-version = "1.0.0"
+version = "0.1.0"
 description = "Extension of the Mindful core for the SUBREAM project"
 authors = ["Valentin Durand de Gevigney", "Jérôme Schmid", "Belinda Mataj-Lokaj"]
 readme = "README.md"

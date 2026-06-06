@@ -11,6 +11,25 @@ Extension of [![Mindful-core](https://img.shields.io/badge/Mindful-core-blue?log
 
 The [examples](./examples/README.md) section depict how the Mindful framework can be applied to classify multimodal data. 
 
+## Versioning
+
+This project follows [Semantic Versioning 2.0.0](https://semver.org/).
+
+Given a version number MAJOR.MINOR.PATCH:
+
+- MAJOR version for incompatible API changes.
+- MINOR version for backward-compatible functionality.
+- PATCH version for backward-compatible bug fixes.
+
+To get the current version in your code:
+```
+import mindful_subream
+print(mindful_subream.__version__)
+```
+
+> [!NOTE]
+> The version is written in `version.py` by maintainers at every release from the `pyproject.toml` file.
+
 ## Funding and Ethics
 
 The Smart and Ultrafast Breast MRI (SUBREAM) project was funded by the Swiss Cancer Research (KFS-5460–08-2021-R) and the Lesion Lens project was funded by the Fonds de Recherche et d’Impulsion (FRI) HES-SO (AGP: 133801). Additional funding supported the public release of Mindful code and the publication of Lesion Lens on Grand-Challenge platform (HES-SO R&I - Open Research Data call 138082/RI-STRATEGIE25-03).

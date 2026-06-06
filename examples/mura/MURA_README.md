@@ -21,7 +21,7 @@ python ./make_mura_configs.py --output_dir <exp_data>/config --folds_dir <exp_da
 Output folders are automatically created. Folder `<exp_data>/logs` will contain the future output of the experiments.
 
 > [!NOTE]
-> Additional information on the configuration files is found [here](./MURA_EXPERIMENT_CONFIGURATION).
+> Additional information on the configuration files is found [here](./MURA_EXPERIMENT_CONFIGURATION.md).
 
 ### Running experiments
 

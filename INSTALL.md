@@ -1,5 +1,9 @@
 # Installation
 
+This library depends on [![Mindful-core](https://img.shields.io/badge/Mindful-core-blue?logo=github)](https://github.com/heds-trm/mindful_core).
+
+Installation instructions are similar, you basically need to install dependencies using [Poetry](https://python-poetry.org/docs/). 
+
 ## Prerequisites
 
 * Python 3.10+ (or the version required by the project)

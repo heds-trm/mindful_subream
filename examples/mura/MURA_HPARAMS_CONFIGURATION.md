@@ -157,13 +157,13 @@ The classifier processes the fused representation and produces the final predict
 
 This configuration defines a multimodal binary classification model with:
 
-- **DenseNet121** image encoding
-- **Structured categorical feature encoding**
-- **128-dimensional modality embeddings**
-- **SIEVE-based multimodal fusion**
-- **4 fusion layers with 4 attention heads**
-- **4 classifier layers with 4 attention heads**
-- **Adam optimization** with a learning rate of **0.0001**
+- Image encoding using a DenseNet121 model
+- Structured categorical feature encoding
+- 128-dimensional modality embeddings
+- SIEVE-based multimodal fusion
+- 4 fusion layers with 4 attention heads
+- 4 classifier layers with 4 attention heads
+- Adam optimization with a learning rate of 0.0001
 
 The model is designed to jointly leverage imaging data and structured metadata for classification tasks.
 

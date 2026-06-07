@@ -4,12 +4,19 @@
 
 ## Overview
 
-Extension of [![Mindful-core](https://img.shields.io/badge/Mindful-core-blue?logo=github)](https://github.com/heds-trm/mindful_core) for the [*SUBREAM*](https://www.hesge.ch/heds/rad/projets/subream) and [*Lesion Lens*](https://www.hesge.ch/heds/rad/projets/lesionlens) projects. We developped deep learning models to characterize breast lesions in Ultrafast DCE MRI images[^1]. The main contribution of these models is to support multiple types of information encoded as:
+Extension of [`Mindful-core`](https://github.com/heds-trm/mindful_core) for the [*SUBREAM*](https://www.hesge.ch/heds/rad/projets/subream) and [*Lesion Lens*](https://www.hesge.ch/heds/rad/projets/lesionlens) projects. We developped deep learning models to characterize breast lesions in Ultrafast DCE MRI images[^1]. The main contribution of these models is to support multiple types of information encoded as:
 - images 
 - scalar information
 - categorical information
 
 The [examples](./examples/README.md) section depict how the Mindful framework can be applied to classify multimodal data. 
+
+Powered by:
+- [![PyTorch](https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/) ([![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause))
+- [![SimpleITK](https://img.shields.io/badge/SimpleITK-blue?logo=github)](https://github.com/SimpleITK/SimpleITK) ([![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0))
+- [![MONAI](https://img.shields.io/badge/MONAI-green?logo=github)](https://github.com/project-monai/monai) ([![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0))
+- [![Mindful-core](https://img.shields.io/badge/Mindful-core-blue?logo=github)](https://github.com/heds-trm/mindful_core) ([![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0))
+
 
 ## Versioning
 
@@ -41,11 +48,6 @@ The project was approved by the Geneva Cantonal Ethics Committee (CCER) (Project
 Contributor metadata is available in:
 - `CITATION.cff` for citation metadata
 - `CONTRIBUTORS.md` for detailed roles and contributions
-
-Powered by [![PyTorch](https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/)
-[![SimpleITK](https://img.shields.io/badge/SimpleITK-blue?logo=github)](https://github.com/SimpleITK/SimpleITK)
-[![MONAI](https://img.shields.io/badge/MONAI-green?logo=github)](https://github.com/project-monai/monai)
-
 
 
 

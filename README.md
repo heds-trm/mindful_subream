@@ -4,6 +4,8 @@
 
 ## Overview
 
+[![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.20581897-blue.svg)](https://doi.org/10.5281/zenodo.20581897)
+
 Extension of [`Mindful-core`](https://github.com/heds-trm/mindful_core) for the [*SUBREAM*](https://www.hesge.ch/heds/rad/projets/subream) and [*Lesion Lens*](https://www.hesge.ch/heds/rad/projets/lesionlens) projects. We developped deep learning models to characterize breast lesions in Ultrafast DCE MRI images[^1]. The main contribution of these models is to support multiple types of information encoded as:
 - images 
 - scalar information

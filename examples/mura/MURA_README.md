@@ -58,11 +58,16 @@ XR_ELBOW_patient00011_study1_negative_image1,XR_ELBOW
 ```
 indicates that image with unique id `XR_ELBOW_patient00011_study1_negative_image1` is an elbow. The unique ID **must** match the same ID in the dataset folds config files.
 
-While there are high chances that this body part information will not help in the targeted classification task, this example is just to illustrate the capabilities of `mindful`.
+While there are high chances that this body part information will not help in the targeted classification task, this example is just to illustrate the capabilities of `mindful`. It is not exploited to ehance the performance of the classification task.
 
 ### Inspecting the results
 
 The log folder will also contain information on the testing phase of the experiments in various files. Among them, `formatted_summary.csv` provides an overview of the performances of the experiments over the various folds. 
+
+> [!NOTE]
+> Results of all experiments are available [here](../doc/multimodal_formatted_summary.csv) in case you would like to compare your training with ours.
+> Despite you use our configuration files to ensure a deterministic behaviour of the training, we found that software updates in e.g. PyTorch or MONAI
+> could lead to differences, hopefully not significant.
 
 If you would like to produce ROC curves for your experiments, you can use the script [draw_roc_comparisons.py](https://github.com/heds-trm/mindful_core/blob/main/scripts/outcomes/draw_roc_comparisons.py) of `mindful_core`:
 

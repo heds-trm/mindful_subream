@@ -198,10 +198,11 @@ class UlTraPhaseEmbeddingBlock(nn.Module):
         batch_size = data.size(0)
         if self.in_channels != 1:
             data = data.transpose(1, 2)
-        data = data.reshape(batch_size, self.phase_count, self.patch_dim)
+        data = data.reshape(batch_size, -1, self.patch_dim)
+        patch_count = data.size(1)
 
         data = self.patch_embeddings(data)
-        data += self.position_embeddings
+        data += self.position_embeddings[:, :patch_count]
         data = self.dropout(data)
         return data
 

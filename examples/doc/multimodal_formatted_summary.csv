@@ -1,0 +1,3 @@
+ID,auroc,eer,accuracy_at_eer,sensitivity_at_eer,specificity_at_eer,accuracy_at_sensitivity90,sensitivity_at_sensitivity90,specificity_at_sensitivity90,loss
+multimodal_densenet121_mura,70.2 (+/- 3.6),35.3 (+/- 1.7),64.7 (+/- 1.7),64.7 (+/- 1.7),64.7 (+/- 1.7),55.5 (+/- 2.3),90.0 (+/- 0.0),32.1 (+/- 3.9),88.1 (+/- 2.1)
+multimodal_densenet121_pt_mura,83.9 (+/- 0.6),24.3 (+/- 0.8),75.7 (+/- 0.7),75.7 (+/- 0.8),75.7 (+/- 0.7),65.0 (+/- 0.6),90.0 (+/- 0.0),48.0 (+/- 1.0),74.7 (+/- 1.1)

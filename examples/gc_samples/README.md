@@ -15,9 +15,7 @@ This data must be passed to the algorithm via a user interface provided by Grand
 
 ## Advanced-MRI-Breast-Lesions datasaet example
 
-To illustrate the provided utilities, we used the case #AMBL-003 from the publicly available [Advanced-MRI-Breast-Lesions datasaet](https://www.cancerimagingarchive.net/collection/advanced-mri-breast-lesions/) (Daniels et al. 2024). This case showcases a malignant lesion (invasive ductal carcinoma) in the right breast. 
-
-_Daniels, D., Last, D., Cohen, K., Mardor, Y., & Sklair-Levy, M. (2024). Standard and Delayed Contrast-Enhanced MRI of Malignant and Benign Breast Lesions with Histological and Clinical Supporting Data (Advanced-MRI-Breast-Lesions) (Version 2) [Data set]. The Cancer Imaging Archive. https://doi.org/10.7937/C7X1-YN57_
+To illustrate the provided utilities, we used the case #AMBL-003 from the publicly available [Advanced-MRI-Breast-Lesions datasaet](https://www.cancerimagingarchive.net/collection/advanced-mri-breast-lesions/)[^1]. This case showcases a malignant lesion (invasive ductal carcinoma) in the right breast. 
 
 ### Imaging data
 Download the DICOM data from the AMBL dataset for case 003. In folder `AIMBL_003/dicom` put a folder containing the DICOM data of DICOM series \#500 with description "500-Registered AX Sen Vibrant MultiPhase". 
@@ -40,10 +38,11 @@ python subtract_images.py --im1 ../examples/gc_samples/AMBL_003/sub_image/AMBL_0
 
 Lesion characteristics were computed based on the provided segmentation in the AMBL dataset. It includes a segmentation of the lesion in DICOM SEG format in the DICOM series \#500 with description "ROI". We converted this series to a binary segmentation mask using [3D Slicer](https://www.slicer.org/) with the "Quantitative Reporting" extension installed. For your convenience, the converted file is available as `AMBL_003/lesion_masks/AMBL_003_1_M.mha`.
 
-The file naming convention is important:
-- AMBL_003: a unique ID to identify the case
-- 1: a 1-indexed lesion number, a case can have more than one lesion
-- M: code for "Malignant". Other possibilities are "L" for lymph node, "B" for benign.
+> [!NOTE]
+> File naming convention is important:
+> - AMBL_003: a unique ID to identify the case
+> - 1: a 1-indexed lesion number, a case can have more than one lesion
+> - M: code for "Malignant". Other possibilities are "L" for lymph node, "B" for benign.
 
 In case the segmentation mask was not available, you could create such a binary image with any segmentation software. Note that the mask can have image characteristics that differ from the MRI image (origin, dimensions, etc.). The importance is that the position of its voxels are in the same physical coordinate system as the MRI image.  
 
@@ -96,14 +95,15 @@ For example:
 
 Lesion Lens supports partial information, where the empty string "" is given to indicate missing information.
 
-In the AMBL dataset, relevant information is found in the following columns:
-- **age**: <col: age at MRI>
-- **BRCA**: "positive" if <col:reason for referral ID#>=4 or "negative" otherwise, (or info in <col: additional reason for referral ID#>)
-- **Chemo**: "" (no info available)
-- **FamRisk**: "other" if <col:reason for referral ID#>=2 or "no" otherwise (or info in <col: additional reason for referral ID#>)
-- **PatRisk**: "yes" if <col:reason for referral ID#>=3 or "no" otherwise (or info in <col: additional reason for referral ID#>)
-- **MenoStatus**: "" (no info available, could be guessed in some occasions given patient age or gender)
-- **Contraception**: "" (no info available)
+> [!NOTE]
+> In the AMBL dataset, relevant information is found in the following columns of the XLSX clinical information file:
+> - **age**: <col: age at MRI>
+> - **BRCA**: "positive" if <col:reason for referral ID#>=4 or "negative" otherwise, (or info in <col: additional reason for referral ID#>)
+> - **Chemo**: "" (no info available)
+> - **FamRisk**: "other" if <col:reason for referral ID#>=2 or "no" otherwise (or info in <col: additional reason for referral ID#>)
+> - **PatRisk**: "yes" if <col:reason for referral ID#>=3 or "no" otherwise (or info in <col: additional reason for referral ID#>)
+> - **MenoStatus**: "" (no info available, could be guessed in some occasions given patient age or gender)
+> - **Contraception**: "" (no info available)
 
 For patient 003, no information was available except the patient age (53 years old). The resulting config file is available in `AMBL_003/config`.
 
@@ -116,3 +116,5 @@ The config files for case 003 are available in `AMBL_003/config`, you can check 
 Run the algorithm with "Try-out Algorithm" and upload the produced subtracted image `AMBL_003/sub_image/AMBL_003_sub.mha` along with the config files. See the algorithm page for more information.
 
 The output should match the [public result](https://grand-challenge.org/algorithms/subream-breast-mri-lesion-lens/jobs/d8bcce62-136e-4122-a6d8-fb186e6c0b83) already published online. The produced [report](./AMBL_003/results/AMBL_003_gc_report.pdf) can be also found in the `AMBL_003/results` folder.
+
+[^1]: Daniels, D., Last, D., Cohen, K., Mardor, Y., & Sklair-Levy, M. (2024). Standard and Delayed Contrast-Enhanced MRI of Malignant and Benign Breast Lesions with Histological and Clinical Supporting Data (Advanced-MRI-Breast-Lesions) (Version 2) [Data set]. The Cancer Imaging Archive. https://doi.org/10.7937/C7X1-YN57

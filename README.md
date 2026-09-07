@@ -4,11 +4,40 @@
 
 ## Overview
 
-Extension of [Mindful-core](https://github.com/heds-trm/mindful_core) for the [*SUBREAM*](https://www.hesge.ch/heds/rad/projets/subream) and [*Lesion Lens*](https://www.hesge.ch/heds/rad/projets/lesionlens) projects.
+[![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.20581897-blue.svg)](https://doi.org/10.5281/zenodo.20581897)
 
-The [examples](./examples/README.md) section depict how the framework can be applied to classify multimodal data. Unfortunately due to restrictions of the CCER, we cannot share data or model weights from our publication (Lokaj et al. 2025).
+Extension of [`Mindful-core`](https://github.com/heds-trm/mindful_core) for the [*SUBREAM*](https://www.hesge.ch/heds/rad/projets/subream) and [*Lesion Lens*](https://www.hesge.ch/heds/rad/projets/lesionlens) projects. We developped deep learning models to characterize breast lesions in Ultrafast DCE MRI images[^1]. The main contribution of these models is to support multiple types of information encoded as:
+- images 
+- scalar information
+- categorical information
 
-_Lokaj, B., Durand de Gevigney, V., Djema, D. A., Zaghir, J., Goldman, J. P., Bjelogrlic, M., Turbe, H., Kinkel, K., Lovis, C., Schmid, J. (2025). Multimodal deep learning fusion of ultrafast-DCE MRI and clinical information for breast lesion classification. Computers in biology and medicine. [10.1016/j.compbiomed.2025.109721](https://doi.org/10.1016/j.compbiomed.2025.109721)_ 
+The [examples](./examples/README.md) section depict how the Mindful framework can be applied to classify multimodal data. 
+
+Powered by:
+- [![PyTorch](https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/) ([![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause))
+- [![SimpleITK](https://img.shields.io/badge/SimpleITK-blue?logo=github)](https://github.com/SimpleITK/SimpleITK) ([![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0))
+- [![MONAI](https://img.shields.io/badge/MONAI-green?logo=github)](https://github.com/project-monai/monai) ([![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0))
+- [![Mindful-core](https://img.shields.io/badge/Mindful-core-blue?logo=github)](https://github.com/heds-trm/mindful_core) ([![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0))
+
+
+## Versioning
+
+This project follows [Semantic Versioning 2.0.0](https://semver.org/).
+
+Given a version number MAJOR.MINOR.PATCH:
+
+- MAJOR version for incompatible API changes.
+- MINOR version for backward-compatible functionality.
+- PATCH version for backward-compatible bug fixes.
+
+To get the current version in your code:
+```
+import mindful_subream
+print(mindful_subream.__version__)
+```
+
+> [!NOTE]
+> The version is written in `version.py` by maintainers at every release from the `pyproject.toml` file.
 
 ## Funding and Ethics
 
@@ -22,6 +51,6 @@ Contributor metadata is available in:
 - `CITATION.cff` for citation metadata
 - `CONTRIBUTORS.md` for detailed roles and contributions
 
-Powered by [![PyTorch](https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/)
-[![SimpleITK](https://img.shields.io/badge/SimpleITK-blue?logo=github)](https://github.com/SimpleITK/SimpleITK)
-[![MONAI](https://img.shields.io/badge/MONAI-green?logo=github)](https://github.com/project-monai/monai)
+
+
+[^1]: Lokaj, B., Durand de Gevigney, V., Djema, D. A., Zaghir, J., Goldman, J. P., Bjelogrlic, M., Turbe, H., Kinkel, K., Lovis, C., Schmid, J. (2025). Multimodal deep learning fusion of ultrafast-DCE MRI and clinical information for breast lesion classification. Computers in biology and medicine. [10.1016/j.compbiomed.2025.109721](https://doi.org/10.1016/j.compbiomed.2025.109721)

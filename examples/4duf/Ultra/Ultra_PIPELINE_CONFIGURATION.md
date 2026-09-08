@@ -12,9 +12,8 @@ Several pipeline files exist; they are all identical except for the **phase sele
 | File | `filter_slices` | Phases kept |
 |------|-----------------|-------------|
 | `ultra-standardize.json` | — | all 13 phases |
-| `ultra-standardize_10slctPhase.json` | `[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]` | first phases (external RHNE cohort) |
-| `ultra-standardize_7slctPhase.json` | `[0, 2, 4, 6, 8, 10, 12]` | 7 evenly-spaced phases |
-| `ultra-standardize_4slctPhase.json` | `[0, 4, 8, 12]` | 4 evenly-spaced phases |
+| `ultra-standardize_7slctPhase.json` | `[0, 2, 4, 6, 8, 10, 12]` | 7 phases |
+| `ultra-standardize_4slctPhase.json` | `[0, 4, 8, 12]` | 4 phases |
 | `ultra-standardize_3slctPhase.json` | `[0, 6, 12]` | first, middle, last |
 | `ultra-standardize_2slctPhase_mid.json` | `[4, 8]` | 2 middle phases |
 | `ultra-standardize_2slctPhase_firstlast.json` | `[0, 12]` | first and last phases |

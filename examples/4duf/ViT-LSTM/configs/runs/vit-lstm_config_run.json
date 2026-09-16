@@ -1,0 +1,56 @@
+{
+    "datasets": {
+        "data-b_g_m": {
+            "folds": "<folds_dir>/b_g_m/"
+        },
+        "data-bg_m": {
+            "folds": "<folds_dir>/bg_m/"
+        },
+        "data-b_m": {
+            "folds": "<folds_dir>/b_m/"
+        }
+    },
+    "shared": {
+        "default": {
+            "visualizers": {
+                "occlusion": {
+                    "image_kernel_size": 16,
+                    "image_kernel_overlap": 0.6,
+                    "image_kernel_sigma": 0.25,
+                    "saved_versions": ["next_to_additive"],
+                    "use_minimum": false
+                }
+            },
+            "log_monitors": ["validation_loss_epoch"],
+            "max_epochs": 500,
+            "batch_size": 64,
+            "patience": 10,
+            "save_last": true,
+            "num_workers": 0,
+            "accelerator": "gpu",
+            "devices": 1,
+            "seeds": [3930787959, 3048086154, 1308332165, 4198623908, 2751205564],
+            "stages": "train test"
+        }
+    },
+    "experiments": {
+        "<experiment_name>": {
+            "skip": "no",
+            "use_imbalanced_sampler": "v2",
+            "dataset": "data-b_g_m",
+            "folds": "all",
+            "model": {
+                "class_name": "mlp",
+                "hparams": "<models_dir>/mlp_3class-hparams.json",
+                "sub_modules": {
+                    "representation_model": {
+                        "class_name": "encoder",
+                        "hparams": "<models_dir>/vit-lstm_hparams.json"
+                    }
+                }
+            },
+            "pipeline_config": "<pipelines_dir>/vit-lstm_standardize.json"
+        }
+    },
+    "log_dir": "<logs_dir>"
+}

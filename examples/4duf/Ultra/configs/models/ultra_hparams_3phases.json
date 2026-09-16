@@ -1,0 +1,26 @@
+{
+	"encoder_config": {
+		"architecture": "ultra",
+		"in_channels": 1,
+		"image_size": [8, 8, 8],
+		"phase_count": 3,
+		"hidden_size": 384,
+		"mlp_dim": 1536,
+		"num_layers": 4,
+		"num_heads": 6,
+		"output_dimension": 128,
+		"use_class_token": false,
+		"dropout_rate": 0.0,
+		"spatial_dims": 3,
+		"qkv_bias": false,
+		"pooling": "max",
+		"norm_outputs": false
+	},
+	
+	"optimizer_config": {
+		"optimizer": {
+			"optimizer_type": "adam",
+			"lr": 1e-4
+		}
+	}
+}

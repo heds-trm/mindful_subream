@@ -1,0 +1,43 @@
+{
+	"encoder_config": {
+		"architecture": "multimodal",
+		"encoders_configs": {
+			"phase_0": {
+				"architecture": "vit",
+				"in_channels": 1,
+				"spatial_dims": 3,
+				"patch_size": [16, 16, 16],
+				"num_vit_layers": 8,
+				"num_vit_heads": 6,
+				"hidden_size": 192,
+				"mlp_dim": 384,
+				"output_dimension": 192,
+				"proj_type": "perceptron",
+				"image_size": [48, 48, 48],
+				"pooling": "cls"
+			},
+			"phase_12": "phase_0"
+		},
+		"fusion_module_config": {
+			"fusion_mode": "lstm",
+			"input_size": 192,
+			"hidden_size": 128,
+			"learn_initial_state": true,
+			"pooling": "last",
+			
+			"num_layers": 4,
+			"bias": true,
+			"dropout": 0.0,
+			"bidirectional": false,
+			"proj_size": 0
+		},
+		"output_dimension": 128
+	},
+	
+	"optimizer_config": {
+		"optimizer": {
+			"optimizer_type": "adam",
+			"lr": 1e-4
+		}
+	}
+}

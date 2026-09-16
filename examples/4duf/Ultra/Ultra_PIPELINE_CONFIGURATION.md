@@ -17,10 +17,9 @@ Several pipeline files exist; they are all identical except for the **phase sele
 | `ultra-standardize_3slctPhase.json` | `[0, 6, 12]` | first, middle, last |
 | `ultra-standardize_2slctPhase_mid.json` | `[4, 8]` | 2 middle phases |
 | `ultra-standardize_2slctPhase_firstlast.json` | `[0, 12]` | first and last phases |
-| `ultra-standardize_slctPhase.json` | `[2, 10]` | 2 intermediate phases |
 
 > [!CAUTION]
-> The number of selected phases must match the `phase_count` of the encoder hparams used by the experiment (see [HParams configuration](./4DUF_HPARAMS_CONFIGURATION.md#ultra-encoder-configuration)).
+> The number of selected phases must match the `phase_count` of the encoder hparams used by the experiment (see [HParams configuration](./Ultra_HPARAMS_CONFIGURATION.md#ultra-encoder-configuration)).
 
 ---
 
@@ -85,7 +84,7 @@ The `preprocess` stage prepares both modalities for model consumption.
 
 ### Standardize Intensity
 
-Standardizes voxel intensities (zero mean, unit variance) over the whole volume.
+Standardizes voxel intensities over the whole volume.
 
 ```json
 {
@@ -183,7 +182,7 @@ The `view_augment` stage applies image augmentations during training only.
 | Parameter | Description |
 |------------|-------------|
 | `prob` | Probability of applying the rotation. |
-| `range_x` / `range_y` / `range_z` | Rotation ranges (radians) around each axis, roughly ±19.5°. |
+| `range_x` / `range_y` / `range_z` | Rotation ranges (radians) around each axis. |
 | `padding_mode` | Padding strategy for voxels leaving the field of view. |
 
 ## Random Affine (translation)
@@ -235,10 +234,5 @@ This pipeline performs the following operations:
 2. Standardize voxel intensities.
 3. Resize all 3D volumes to **8 × 8 × 8**.
 4. Convert images and labels to `float32` tensors.
-5. Apply image augmentations during training:
-   - Random flipping
-   - Random rotations (up to ~±19.5° per axis)
-   - Random translations (up to 2 voxels per axis)
-   - Gaussian noise addition
+5. Apply image augmentations during training: Random flipping, Random rotations, Random translations (up to 2 voxels per axis), Gaussian noise addition
 
-The phase-selection variants allow studying the trade-off between the temporal richness of the 4D sequence and the model complexity, at constant preprocessing and augmentation.

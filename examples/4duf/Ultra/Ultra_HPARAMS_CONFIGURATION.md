@@ -2,7 +2,7 @@
  
 This configuration defines the composite classification model used in the [4DUF example](./4DUF_README.md). The model is made of two parts, each configured by its own hparams file:
 
-- an **MLP classifier** (top-level model, `class_name: "mlp"`) for the final prediction,
+- an **MLP classifier** (classifier model, `class_name: "mlp"`) for the final prediction,
 - an **"Ultra" 4D encoder** (sub-module `representation_model`, `class_name: "encoder"`) transforming the 4D image into a latent representation.
 The two hparams files are referenced together in the [experiment configuration](./Ultra_EXPERIMENT_CONFIGURATION.md#composite-model).
  
@@ -15,10 +15,10 @@ The encoder is a transformer ("Ultra" architecture) that processes a sequence of
 | File | `phase_count` | Used with pipeline |
 |------|---------------|--------------------|
 | `ultra_hparams.json` | 13 | `ultra-standardize.json` (full sequence) |
-| `ultra_hparams_7phases.json` | 7 | `..._7slctPhase.json` |
-| `ultra_hparams_4phases.json` | 4 | `..._4slctPhase.json` |
-| `ultra_hparams_3phases.json` | 3 | `..._3slctPhase.json` |
-| `ultra_hparams_2phases.json` | 2 | `..._2slctPhase_mid.json` or `..._2slctPhase_firstlast.json` |
+| `ultra_hparams_7phases.json` | 7 | `ultra-standardize_7slctPhase.json` |
+| `ultra_hparams_4phases.json` | 4 | `ultra-standardize_4slctPhase.json` |
+| `ultra_hparams_3phases.json` | 3 | `ultra-standardize_3slctPhase.json` |
+| `ultra_hparams_2phases.json` | 2 | `ultra-standardize_2slctPhase_mid.json` or `ultra-standardize_2slctPhase_firstlast.json` |
 
  
 Example (`ultra_hparams.json`):
@@ -93,10 +93,6 @@ Both the classifier and the encoder use the same optimizer configuration:
 |------------|-------------|
 | `optimizer_type` | Optimization algorithm used during training. |
 | `lr` | Learning rate. |
- 
-> [!NOTE]
-> - The Adam optimizer is used for gradient-based optimization.
-> - The learning rate is set to `1e-4`.
  
 ---
 

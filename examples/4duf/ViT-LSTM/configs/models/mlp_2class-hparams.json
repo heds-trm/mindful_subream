@@ -1,0 +1,14 @@
+{
+	"classifier_config": {
+		"features": [],
+		"class_count": 2,
+		"yield_confidence": false
+	},
+	"freeze_representation_model": false,
+	"optimizer_config": {
+		"optimizer": {
+			"optimizer_type": "adam",
+			"lr": 1e-4
+		}
+	}
+}

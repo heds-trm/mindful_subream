@@ -16,20 +16,22 @@ This approach allows experiments to be reproduced and modified without changing 
 
 ## Example Configuration
 
+The config experiment example configuration : [ultra_config_run.json](./4duf/configs/Ultra/configs/runs/ultra_config_run.json)
+
 
  
 ```json
 {
     "datasets": {
         "data-b_g_m": {
-            "folds": "<folds_dir>/b_g_m/",
+            "folds": "<folds_dir>/b_g_m/"
         },
-        "data-b_g_m": {
-            "folds": "<folds_dir>/bg_m/",
+        "data-bg_m": {
+            "folds": "<folds_dir>/bg_m/"
         },
-        "data-b_g_m": {
-            "folds": "<folds_dir>/b_m/",
-        },
+        "data-b_m": {
+            "folds": "<folds_dir>/b_m/"
+        }
     },
     "shared": {
         "default": {
@@ -55,22 +57,22 @@ This approach allows experiments to be reproduced and modified without changing 
         }
     },
     "experiments": {
-        "ultra-lstm_4D_fusion_B-G-M_7": {
+        "<experiment_name>": {
             "skip": "no",
             "use_imbalanced_sampler": "v2",
             "dataset": "data-b_g_m",
             "folds": "all",
-            "model": {
+			"model": {
                 "class_name": "mlp",
                 "hparams": "<models_dir>/mlp_3class-hparams.json",
                 "sub_modules": {
                     "representation_model": {
                         "class_name": "encoder",
-                        "hparams": "<models_dir>/ultra_default-hparams_best_7phases.json"
+                        "hparams": "<models_dir>/ultra_hparams.json"
                     }
                 }
             },
-            "pipeline_config": "<pipelines_dir>/multimodal-ultra-standardize_7slctPhase.json"
+            "pipeline_config": "<pipelines_dir>/ultra-standardize.json"
         }
     },
     "log_dir": "<logs_dir>"
@@ -79,7 +81,7 @@ This approach allows experiments to be reproduced and modified without changing 
 
 
 > [!NOTE]
-> The paths shown in the run configuration files are absolute paths examples. You will need to replace them with your own paths (`<folds_dir>`, `<clinical_dir>`, `<models_dir>`, `<pipelines_dir>`, `<logs_dir>`) according to where your data and config files are located.
+> The paths shown in the run configuration files are absolute paths examples. You will need to replace them with your own paths (`<folds_dir>`, `<models_dir>`, `<pipelines_dir>`, `<logs_dir>`) according to where your data and config files are located.
  
 
 ---
@@ -119,8 +121,29 @@ The `shared.default` section defines settings inherited by all experiments (each
 | `stages` | Stages to execute (`train test`). |
 
 
+# COmposite model
+The `model`section defines the model architecture:
+
+- `sub_modules.representation_model`: an `encoder` sub-module using the ["Ultra" 4D encoder hparams](./Ultra_HPARAMS_CONFIGURATION.md#ultra-encoder-configuration). It transforms the 4D image into a latent representation consumed by the classifier.
+- `class_name`: `mlp`: multi-layer perceptron classifier, configured by an [MLP hparams file](./Ultra_HPARAMS_CONFIGURATION.md#classifier-mlp-configuration) (2-class or 3-class variant).
+
+---
+
+
 # Experiments
  
-revoir work in progress...
+The `experiments` section defines the experiments to execute. Common experiment-level parameters:
 
+| Parameter | Description |
+|-----------|-------------|
+| `skip` | Whether the experiment is skipped (`yes`) or run (`no`). |
+| `use_imbalanced_sampler` | Enables class-imbalance-aware sampling during training (version `v2`). |
+| `dataset` | Name of the dataset entry to use. |
+| `folds` | Folds to run (`all` for full cross-validation). |
+| `model` | Composite model (`encoder` and `mlp` with associated hparams files examples (ultra_hparams.json) and (mlp_3class-hparams.json)) |
+| `pipeline_config` | Pipeline of the architecture ([pipeline config](./configs/pipelines/ultra-standardize.json)). |
+| `checkpoint` | Name of another experiment whose trained checkpoint is loaded (for external external validation). |
 
+# Logging
+ 
+The `log_dir` parameter defines the root folder `<logs_dir>` where each experiment writes its outputs (tensorboard files, `.ckpt` checkpoints, `formatted_summary.csv`) are written to `<exp_data>/logs/<experiment_name>`.

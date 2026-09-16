@@ -6,7 +6,7 @@ This example will showcase the use of various 4D models to characterize breast l
 
 Three models are compared on the same task, dataset and experiment protocol using the `mindful_subream` framework. Each has its own documentation set (README, experiment, hparams and pipeline configuration) : 
 
-<img src="../doc/4D_models_2.png" alt="Overview of the three 4D models" width="1500">
+<img src="../doc/4D_models_3.PNG" alt="Overview of the three 4D models" width="1500">
 
 |   | Model | Approach | Input data | Documentation |
 |---|-------|----------|------------|---------------|

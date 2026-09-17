@@ -1,6 +1,6 @@
 # Model HParams Configuration
  
-This configuration defines the composite classification model used in the [4DUF example](./4DUF_README.md). The model is made of two parts, each configured by its own hparams file:
+This configuration defines the composite classification model used in the [4DUF example](../4DUF_README.md). The model is made of two parts, each configured by its own hparams file:
 
 - an **MLP classifier** (classifier model, `class_name: "mlp"`) for the final prediction,
 - an **"Ultra" 4D encoder** (sub-module `representation_model`, `class_name: "encoder"`) transforming the 4D image into a latent representation.

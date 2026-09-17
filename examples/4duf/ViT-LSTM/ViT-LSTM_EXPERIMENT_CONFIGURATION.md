@@ -15,7 +15,7 @@ This approach allows experiments to be reproduced and modified without changing 
 > Ex. `{"one":1,"two":2,}` is forbidden.
 
 
-The structure of the configuration file is identical to the [Ultra example](.4duf/Ultra/Ultra_EXPERIMENT_CONFIGURATION.md). Only the referenced hparams and pipeline files differ, as the ViT-LSTM model uses its own [hyperparameters](./ViT-LSTM_HPARAMS_CONFIGURATION.md) and [pipeline](./ViT-LSTM_PIPELINE_CONFIGURATION.md).
+The structure of the configuration file is identical to the [Ultra example](../Ultra/Ultra_EXPERIMENT_CONFIGURATION.md). Only the referenced hparams and pipeline files differ, as the ViT-LSTM model uses its own [hyperparameters](./ViT-LSTM_HPARAMS_CONFIGURATION.md) and [pipeline](./ViT-LSTM_PIPELINE_CONFIGURATION.md).
 
 ## Example Configuration
 

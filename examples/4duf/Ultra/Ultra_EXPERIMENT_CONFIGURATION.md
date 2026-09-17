@@ -16,7 +16,7 @@ This approach allows experiments to be reproduced and modified without changing 
 
 ## Example Configuration
 
-The config experiment example configuration : [ultra_config_run.json](./4duf/configs/Ultra/configs/runs/ultra_config_run.json)
+The config experiment example configuration : [ultra_config_run.json](./configs/runs/ultra_config_run.json)
 
 
  
@@ -121,7 +121,7 @@ The `shared.default` section defines settings inherited by all experiments (each
 | `stages` | Stages to execute (`train test`). |
 
 
-# COmposite model
+# Composite model
 The `model`section defines the model architecture:
 
 - `sub_modules.representation_model`: an `encoder` sub-module using the ["Ultra" 4D encoder hparams](./Ultra_HPARAMS_CONFIGURATION.md#ultra-encoder-configuration). It transforms the 4D image into a latent representation consumed by the classifier.

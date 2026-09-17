@@ -25,7 +25,7 @@ The classification of lesions targets three **classification tasks**, each with 
 - **B-M**: Benign vs. malignant (2 classes, lymph nodes excluded)
 
 
-Each **classification task** comprises a set of ** 5 fold files** (one CSV file per fold of the cross-validation) located in the folds folder of the task (`<folds_dir>/b_g_m/`, `<folds_dir>/b_m/`, `<folds_dir>/bg_m/`):
+Each **classification task** comprises a set of **5 fold files** (one CSV file per fold of the cross-validation) located in the folds folder `<folds_dir>` of the task (`<folds_dir>/b_g_m/`, `<folds_dir>/b_m/`, `<folds_dir>/bg_m/`):
 - `fold_00.csv`
 - `fold_01.csv`
 - `fold_02.csv`

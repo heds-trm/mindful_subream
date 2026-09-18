@@ -95,7 +95,7 @@ Only the experiments whose `skip` flag is set to `no` are executed. Outputs (ten
 │       ├── models/       # per-phase ViT + LSTM fusion hparams + MLP classifier hparams
 │       ├── pipelines/    # per-phase modality pipelines (take_slice per phase)
 │       └── runs/         # run configuration file
-└── ViT-Transformer/
+├── ViT-Transformer/
 │   └── config
 │       ├── models/       # per-phase ViT + Transformer fusion hparams + MLP classifier hparams
 │       ├── pipelines/    # per-phase modality pipelines (take_slice per phase)

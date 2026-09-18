@@ -84,17 +84,20 @@ Only the experiments whose `skip` flag is set to `no` are executed. Outputs (ten
 ## Repository layout
  
 ```
-<exp_data>/configs/
+<exp_data>  
 ├── Ultra/
-│   ├── models/       # ultra encoder hparams (per phase count) + MLP classifier hparams
-│   ├── pipelines/    # 4D tensor pipelines (phase selection via filter_slices)
-│   └── runs/         # run configuration file
+│   └── configs
+│       ├── models/       # ultra encoder hparams (per phase count) + MLP classifier hparams
+│       ├── pipelines/    # 4D tensor pipelines (phase selection via filter_slices)
+│       └── runs/         # run configuration file
 ├── ViT-LSTM/
-│   ├── models/       # per-phase ViT + LSTM fusion hparams + MLP classifier hparams
-│   ├── pipelines/    # per-phase modality pipelines (take_slice per phase)
-│   └── runs/         # run configuration file
+│   └── configs
+│       ├── models/       # per-phase ViT + LSTM fusion hparams + MLP classifier hparams
+│       ├── pipelines/    # per-phase modality pipelines (take_slice per phase)
+│       └── runs/         # run configuration file
 └── ViT-Transformer/
-│   ├── models/       # per-phase ViT + Transformer fusion hparams + MLP classifier hparams
-│   ├── pipelines/    # per-phase modality pipelines (take_slice per phase)
-│   └── runs/         # run configuration file
+│   └── config
+│       ├── models/       # per-phase ViT + Transformer fusion hparams + MLP classifier hparams
+│       ├── pipelines/    # per-phase modality pipelines (take_slice per phase)
+│       └── runs/         # run configuration file
 ```

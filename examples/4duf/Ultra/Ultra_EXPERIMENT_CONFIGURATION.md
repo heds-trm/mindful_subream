@@ -139,7 +139,7 @@ The `experiments` section defines the experiments to execute. Common experiment-
 | `skip` | Whether the experiment is skipped (`yes`) or run (`no`). |
 | `use_imbalanced_sampler` | Enables class-imbalance-aware sampling during training (version `v2`). |
 | `dataset` | Name of the dataset entry to use. |
-| `folds` | Folds to run (`all` for full cross-validation). |
+| `folds` | Folds to run provided as a 0-based integer, a list of integers, or `all` to include all available folds. |
 | `model` | Composite model (`encoder` and `mlp` with associated hparams files examples (ultra_hparams.json) and (mlp_3class-hparams.json)) |
 | `pipeline_config` | Pipeline of the architecture ([pipeline config](./configs/pipelines/ultra-standardize.json)). |
 | `checkpoint` | Name of another experiment whose trained checkpoint is loaded (for external external validation). |

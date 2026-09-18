@@ -144,6 +144,9 @@ The `experiments` section defines the experiments to execute. Common experiment-
 | `pipeline_config` | Pipeline of the architecture ([pipeline config](./configs/pipelines/ultra-standardize.json)). |
 | `checkpoint` | Name of another experiment whose trained checkpoint is loaded (for external external validation). |
 
+> [!CAUTION]
+> In the [ultra_config_run.json](./configs/runs/ultra_config_run.json) example, the experiment to be run is named `<experiment_name>`, you can modify it so that data produced in the `log_dir` contains this experiment name. Moreover, remember that each experiment is **associated with corresponding configs files** for the model and the pipeline, which are provided in the [config](./configs) folder for the experiments of our paper. That means that you will have to update or create a new run config file to perform the corresponding experiment. As depicted in the [MURA example](../../mura/MURA_README.md) you can put all you experiments in a single run file and execute them with a single command (as long as the `skip` parameter is not set to `yes`).
+
 # Logging
  
 The `log_dir` parameter defines the root folder `<logs_dir>` where each experiment writes its outputs (tensorboard files, `.ckpt` checkpoints, `formatted_summary.csv`) are written to `<exp_data>/logs/<experiment_name>`.

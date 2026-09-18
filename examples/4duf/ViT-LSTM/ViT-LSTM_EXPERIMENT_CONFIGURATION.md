@@ -19,7 +19,7 @@ The structure of the configuration file is identical to the [Ultra example](../U
 
 ## Example Configuration
 
-The config experiment example configuration : [vit-lstm_config_run.json](./4duf/Vit-LSTM/configs/runs/vit-lstm_config_run.json)
+The config experiment example configuration : [vit-lstm_config_run.json](./configs/runs/vit-lstm_config_run.json)
 
 
  

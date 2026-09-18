@@ -37,8 +37,8 @@ Each fold file lists all samples with their train/validation/test assignment for
 The header line below defines the expected columns of a fold file; the row underneath is an example of the potential values found in each of them :
  
 ```csv
-ScanID,SubsetID,Label,image:image,image:mask,image:phase_0,...,image:phase_12
-66_1_0,test,0,<data_root>/images/.../66_lesion_1_0_B/phase_12.mha,<data_root>/masks/.../66_lesion_1_0_B/mask_0.mha,<data_root>/images/.../66_lesion_1_0_B/phase_0.mha,...,<data_root>/images/.../66_lesion_1_0_B/phase_12.mha
+ScanID,SubsetID,Label,image:image,image:mask
+66_1_0,test,0,<data_root>/images/.../66_lesion_1_0_B/phase_12.mha,<data_root>/masks/.../66_lesion_1_0_B/mask_0.mha
 ```
 ### Column naming
  
@@ -53,8 +53,7 @@ The `image` modality provides the following entries :
  
 | Column | Description |
 |--------|-------------|
-| `image:phase_0` ... `image:phase_12` | Paths to the 13 temporal phase volumes (`.mha`) composing the 4D ultrafast sequence, in temporal order. These are the volumes loaded by `load_image_4d`. |
-| `image:image` | Path to a single reference volume of the sequence. |
+| `image:image` | Path to a single reference volume of the temporal sequence. |
 | `image:mask` | Path to the ROI mask of the lesion. |
  
 > [!NOTE]

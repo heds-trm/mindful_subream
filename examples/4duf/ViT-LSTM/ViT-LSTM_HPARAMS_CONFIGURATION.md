@@ -1,6 +1,6 @@
 # Model HParams Configuration
  
-This configuration defines the composite classification model used in the [4DUF example](./4DUF_README.md). The model is made of two parts, each configured by its own hparams file:
+This configuration defines the composite classification model used in the [4DUF example](../4DUF_README.md). The model is made of two parts, each configured by its own hparams file:
 
 - an **MLP classifier** (classifier model, `class_name: "mlp"`) for the final prediction,
 - a **ViT-LSTM encoder** (sub-module `representation_model`, `class_name: "encoder"`): one 3D Vision Transformer (ViT) per temporal phase, with **weights shared across phases**, followed by an **LSTM fusion module** producing the latent representation.

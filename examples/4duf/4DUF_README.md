@@ -53,9 +53,9 @@ The `image` modality provides the following entries :
  
 | Column | Description |
 |--------|-------------|
-| `image:image` | Path to a single reference volume of the temporal sequence. See [Pipeline Configuration](./Ultra/Ultra_PIPELINE_CONFIGURATION.md) to prepare the 4D data.|
+| `image:image` | Path to a single reference volume of the temporal sequence. See [Pipeline Configuration](./Ultra/Ultra_PIPELINE_CONFIGURATION.md#image-processing) to prepare the 4D data.|
 | `image:mask` | Path to the ROI mask of the lesion. |
- 
+
 > [!NOTE]
 > The `Label` column encodes the task-specific classes: the same lesion may have a different label value in the `b_g_m`, `b_m` and `bg_m` fold files (e.g. a malignant lesion is `2` in B-G-M but `1` in the 2-class tasks), and the `b_m` folds contain fewer samples (lymph nodes excluded). The fold files of the three tasks are therefore **not interchangeable**.
 

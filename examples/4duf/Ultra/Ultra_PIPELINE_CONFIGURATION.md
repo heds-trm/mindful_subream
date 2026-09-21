@@ -95,7 +95,7 @@ The `preprocess` stage prepares both modalities for model consumption.
 > For example, let's assume we have 3 phases and the CSV file has this first row:
 > ```csv
 > ScanID,SubsetID,Label,image:image,image:mask
-> 66_1_0,test,0,image_folder/phase_3.mha,mask_folder/mask_0.mha
+> 66_1_0,test,0,image_folder/phase_2.mha,mask_folder/mask_0.mha
 > ```
 > The folder `image_folder` will contain 3 files named `phase_0.mha`, `phase_1.mha`, `phase_2.mha`
 > **Accepted image formats are those supported by MONAI `LoadImage`.**

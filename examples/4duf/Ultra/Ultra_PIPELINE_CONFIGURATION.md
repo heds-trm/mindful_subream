@@ -40,7 +40,9 @@ Several pipeline files exist; they are all identical except for the **phase sele
     }
 }
 ```
-
+> [!NOTE]
+> Prepare your 4D data according to guidelines in the Preprocessing stage.
+> 
 ## Outputs
 
 | Name | Description |
@@ -72,7 +74,8 @@ The `preprocess` stage prepares both modalities for model consumption.
     "type": "load_image_4d",
     "parameters": {
         "filter_slices": [0, 2, 4, 6, 8, 10, 12],
-        "image_only": true
+        "image_only": true.
+        "filename_pattern":"phase_*.mha"
     }
 }
 ```
@@ -81,6 +84,14 @@ The `preprocess` stage prepares both modalities for model consumption.
 |------------|-------------|
 | `filter_slices` | Indices of the temporal phases to keep. When omitted, the full sequence is loaded. |
 | `image_only` | Whether only the image data is returned (metadata discarded). |
+| `filename_pattern` | Filename pattern to identify 3D volumes of phases to load. |
+
+> [!WARNING]
+> `load_image_4d` loads 4D image data as a series of 3D volumes saved to files following a specific filename pattern. By default (i.e. if `filename_pattern` is missing in parameters), this pattern is `phase_*.mha`. The image filename specified in the CSV file as the `image:image` entry (see [datasets section](../4DUF_README.md#tasks-and-datasets)) will provide the folder containing these 3D volumes. Then the loader will all phases in the folder matching the filename pattern. For example, let's assume we have 3 phases and the CVS file has this first row:
+> ScanID,SubsetID,Label,image:image,image:mask
+> 66_1_0,test,0,image_folder/phase_12.mha,mask_folder/mask_0.mha
+> the folder `image_folder` will contain 3 files named `phase_0.mha`, ....
+> Accepted image formats are those supported by MONAI `LoadImage`.
 
 ### Standardize Intensity
 

@@ -125,7 +125,7 @@ The `experiments` section and its common parameters are identical to the [Ultra 
 | first and last phases ("first-last") | `vit-transformer_hparams_2phases_firstlast.json` | `4d_pipeline_2phases_firstlast.json` | 0, 12 |
 
  
-The classifier hparams file (`mlp_2class-hparams.json` or `mlp_3class-hparams.json`) follows the classification task, as in the Ultra example. **Remember to update your run config file to have experiments pointing at the corresponding model and pipeline config files** (see [Ultra example](../Ultra/Ultra_EXPERIMENT_CONFIGURATION.md#experiments).
+The classifier hparams file (`mlp_2class-hparams.json` or `mlp_3class-hparams.json`) follows the classification task, as in the Ultra example. **Remember to update your run config file to have experiments pointing at the corresponding model and pipeline config files** (see [Ultra example](../Ultra/Ultra_EXPERIMENT_CONFIGURATION.md#experiments)).
 
 
 # Logging

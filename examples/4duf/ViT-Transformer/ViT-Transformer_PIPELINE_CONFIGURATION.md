@@ -8,7 +8,7 @@ One pipeline file exists per phase configuration:
  
 | File | `filter_slices` | Output modalities |
 |------|-----------------|-------------------|
-| `4d_pipeline.json` | — (all phases) | `phase_0` ... `phase_12` |
+| `4d_pipeline.json` | (all phases) | `phase_0` ... `phase_12` |
 | `4d_pipeline_7phases.json` | `[0, 2, 4, 6, 8, 10, 12]` | `phase_0`, `phase_2`, ..., `phase_12` |
 | `4d_pipeline_4phases.json` | `[0, 4, 8, 12]` | `phase_0`, `phase_4`, `phase_8`, `phase_12` |
 | `4d_pipeline_3phases.json` | `[0, 6, 12]` | `phase_0`, `phase_6`, `phase_12` |

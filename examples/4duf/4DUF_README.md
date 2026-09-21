@@ -53,7 +53,7 @@ The `image` modality provides the following entries :
  
 | Column | Description |
 |--------|-------------|
-| `image:image` | Path to a single reference volume of the temporal sequence. |
+| `image:image` | Path to a single reference volume of the temporal sequence. See [Pipeline Configuration](./Ultra/Ultra_PIPELINE_CONFIGURATION.md) to prepare the 4D data.|
 | `image:mask` | Path to the ROI mask of the lesion. |
  
 > [!NOTE]

@@ -2,8 +2,6 @@
 
 This pipeline defines the preprocessing and augmentation operations applied to the 4D imaging data before training and evaluation.
  
-Its distinctive feature, compared to the [Ultra pipeline](../Ultra/Ultra_PIPELINE_CONFIGURATION.md), is that the 4D image is **split into one modality per temporal phase** (`phase_0`, `phase_2`, ...): the ViT-LSTM encoder expects each phase as a separate input.
- 
 One pipeline file exists per phase configuration:
  
 | File | `filter_slices` | Output modalities |

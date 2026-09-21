@@ -16,7 +16,8 @@
                 "type": "load_image_4d",
                 "parameters": {
 					"filter_slices": [4, 8],
-                    "image_only": true
+                    "image_only": true,
+					"filename_pattern":"phase_*.mha"
                 }
             },
             {

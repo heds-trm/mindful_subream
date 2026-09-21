@@ -16,7 +16,8 @@
                 "parameters": {
                     "image_only": true,
 					"filter_slices": [4, 8],
-					"separate_channel_dim": false
+					"separate_channel_dim": false,
+					"filename_pattern":"phase_*.mha"
                 }
             },
             {
